@@ -6,19 +6,30 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate-types": "npx supabase gen types typescript --project-id ezrijpglwesrnytvpyox --schema public > src/types_db.ts"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
+    "@prisma/client": "^6.3.1",
+    "@supabase/ssr": "^0.5.2",
+    "@supabase/supabase-js": "^2.48.1",
+    "@tailwindcss/forms": "^0.5.10",
+    "clsx": "^2.1.1",
+    "next": "15.1.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "next": "15.1.6"
+    "react-icons": "^5.4.0"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "postcss": "^8",
-    "tailwindcss": "^3.4.1"
+    "prettier": "^3.5.0",
+    "prettier-plugin-tailwindcss": "^0.6.11",
+    "prisma": "^6.3.1",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
   }
 }
