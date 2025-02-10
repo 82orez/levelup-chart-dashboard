@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
     "generate-types": "npx supabase gen types typescript --project-id ezrijpglwesrnytvpyox --schema public > src/types_db.ts"
