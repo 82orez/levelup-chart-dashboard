@@ -42,6 +42,97 @@ export type Database = {
         }
         Relationships: []
       }
+      Account: {
+        Row: {
+          access_token: string | null
+          createdAt: string
+          expires_at: number | null
+          id_token: string | null
+          provider: string
+          providerAccountId: string
+          refresh_token: string | null
+          refresh_token_expires_in: number | null
+          scope: string | null
+          session_state: string | null
+          token_type: string | null
+          type: string
+          updatedAt: string
+          userId: string
+        }
+        Insert: {
+          access_token?: string | null
+          createdAt?: string
+          expires_at?: number | null
+          id_token?: string | null
+          provider: string
+          providerAccountId: string
+          refresh_token?: string | null
+          refresh_token_expires_in?: number | null
+          scope?: string | null
+          session_state?: string | null
+          token_type?: string | null
+          type: string
+          updatedAt: string
+          userId: string
+        }
+        Update: {
+          access_token?: string | null
+          createdAt?: string
+          expires_at?: number | null
+          id_token?: string | null
+          provider?: string
+          providerAccountId?: string
+          refresh_token?: string | null
+          refresh_token_expires_in?: number | null
+          scope?: string | null
+          session_state?: string | null
+          token_type?: string | null
+          type?: string
+          updatedAt?: string
+          userId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Account_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "User"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      Session: {
+        Row: {
+          createdAt: string
+          expires: string
+          sessionToken: string
+          updatedAt: string
+          userId: string
+        }
+        Insert: {
+          createdAt?: string
+          expires: string
+          sessionToken: string
+          updatedAt: string
+          userId: string
+        }
+        Update: {
+          createdAt?: string
+          expires?: string
+          sessionToken?: string
+          updatedAt?: string
+          userId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Session_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "User"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       test: {
         Row: {
           age: number | null
@@ -63,6 +154,54 @@ export type Database = {
           id?: number
           name?: string
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      User: {
+        Row: {
+          createdAt: string
+          email: string
+          emailVerified: string | null
+          id: string
+          image: string | null
+          name: string | null
+          updatedAt: string
+        }
+        Insert: {
+          createdAt?: string
+          email: string
+          emailVerified?: string | null
+          id: string
+          image?: string | null
+          name?: string | null
+          updatedAt: string
+        }
+        Update: {
+          createdAt?: string
+          email?: string
+          emailVerified?: string | null
+          id?: string
+          image?: string | null
+          name?: string | null
+          updatedAt?: string
+        }
+        Relationships: []
+      }
+      VerificationToken: {
+        Row: {
+          expires: string
+          identifier: string
+          token: string
+        }
+        Insert: {
+          expires: string
+          identifier: string
+          token: string
+        }
+        Update: {
+          expires?: string
+          identifier?: string
+          token?: string
         }
         Relationships: []
       }
