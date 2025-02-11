@@ -1,18 +1,17 @@
 import { NextResponse } from "next/server";
 import { hash } from "bcryptjs";
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
 
 export async function POST(req: Request) {
   console.log("Incoming request...");
+  const body = await req.json();
 
   try {
     // 요청 본문을 파싱하기 전 로그 추가
     console.log("Parsing request body...");
 
-    let body;
+    // 로그;
     try {
-      body = await req.json();
       console.log("Parsed body:", body);
     } catch (error) {
       console.error("Failed to parse JSON:", error);
