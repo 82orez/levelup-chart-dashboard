@@ -16,10 +16,10 @@ export default function SignInPage() {
   console.log("data: ", data);
   const router = useRouter();
 
-  // 로그인이 되어 있을 때 이 페이지로 접근하면 루트 페이지 '/'로 되돌림.
+  // 로그인이 되어 있을 때 이 페이지로 접근하면 루트 페이지 '/dashboard' 로 되돌림.
   useEffect(() => {
     if (status === "authenticated") {
-      router.replace("/");
+      router.replace("/dashboard");
     }
   }, [status, router]);
 
