@@ -26,7 +26,7 @@ export default function Page() {
               로그인 <ArrowRightIcon className="w-5 md:w-2 lg:w-6" />
             </Link>
             <Link
-              href="/signup"
+              href="/users/sign-up"
               className="flex items-center gap-2 self-start rounded-lg bg-blue-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-400 md:text-base">
               회원가입 <UserPlusIcon className="w-5 md:w-2 lg:w-6" />
             </Link>

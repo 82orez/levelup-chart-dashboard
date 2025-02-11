@@ -165,6 +165,7 @@ export type Database = {
           id: string
           image: string | null
           name: string | null
+          password: string | null
           updatedAt: string
         }
         Insert: {
@@ -174,6 +175,7 @@ export type Database = {
           id: string
           image?: string | null
           name?: string | null
+          password?: string | null
           updatedAt: string
         }
         Update: {
@@ -183,6 +185,7 @@ export type Database = {
           id?: string
           image?: string | null
           name?: string | null
+          password?: string | null
           updatedAt?: string
         }
         Relationships: []
