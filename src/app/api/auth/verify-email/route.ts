@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-
 import { Resend } from "resend";
 import crypto from "crypto";
 
@@ -12,6 +11,15 @@ export async function POST(req: Request) {
 
     if (!email) {
       return NextResponse.json({ error: "Email is required." }, { status: 400 });
+    }
+
+    // 이메일이 user 테이블에 이미 존재하는지 확인
+    const existingUser = await prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (existingUser) {
+      return NextResponse.json({ message: "이미 가입된 이메일입니다." }, { status: 400 });
     }
 
     // 랜덤 6자리 숫자 생성

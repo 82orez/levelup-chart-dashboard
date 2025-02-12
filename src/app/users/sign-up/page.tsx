@@ -3,11 +3,12 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
+import clsx from "clsx";
+import Link from "next/link";
 
 export default function SignUp() {
   const router = useRouter();
 
-  // 상태 관리
   const [step, setStep] = useState<"verify" | "register">("verify");
   const [email, setEmail] = useState("");
   const [token, setToken] = useState("");
@@ -15,7 +16,10 @@ export default function SignUp() {
   const [message, setMessage] = useState("");
   const [formData, setFormData] = useState({ name: "", password: "" });
 
-  // 이메일 인증 요청
+  const isValidEmail = (email: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
   const sendVerification = useMutation({
     mutationFn: async () => {
       const response = await fetch("/api/auth/verify-email", {
@@ -25,15 +29,15 @@ export default function SignUp() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to send verification code.");
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to send verification code.");
       }
       return response.json();
     },
-    onSuccess: () => setMessage("Verification code sent to email."),
-    onError: (error) => setMessage(`Error: ${error.message}`),
+    onSuccess: (data) => setMessage(data.message || "Verification code sent to email."),
+    onError: (error: Error) => setMessage(`Error: ${error.message}`),
   });
 
-  // 인증 코드 확인
   const validateCode = useMutation({
     mutationFn: async () => {
       const response = await fetch("/api/auth/validate-code", {
@@ -43,19 +47,19 @@ export default function SignUp() {
       });
 
       if (!response.ok) {
-        throw new Error("Invalid verification code.");
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Invalid verification code.");
       }
       return response.json();
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       setIsVerified(true);
       setStep("register");
-      setMessage("Email verified successfully!");
+      setMessage(data.message || "Email verified successfully!");
     },
-    onError: (error) => setMessage(`Error: ${error.message}`),
+    onError: (error: Error) => setMessage(`Error: ${error.message}`),
   });
 
-  // 회원가입 요청
   const registerUser = useMutation({
     mutationFn: async () => {
       const response = await fetch("/api/auth/register", {
@@ -65,18 +69,18 @@ export default function SignUp() {
       });
 
       if (!response.ok) {
-        console.error(`Failed with status: ${response.status}`);
-        const data = await response.json();
-        throw new Error(data.error || "Registration failed");
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Registration failed");
       }
 
       return response.json();
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      setMessage(data.message || "Registration successful!");
       router.push("/login");
     },
-    onError: (err: Error) => {
-      setMessage(`Error: ${err.message}`);
+    onError: (error: Error) => {
+      setMessage(`Error: ${error.message}`);
     },
   });
 
@@ -99,28 +103,31 @@ export default function SignUp() {
           />
           <button
             onClick={() => sendVerification.mutate()}
-            disabled={sendVerification.isPending}
+            disabled={!isValidEmail(email) || sendVerification.isPending}
             className="w-full rounded-md bg-blue-600 p-2 text-white disabled:bg-gray-400">
             {sendVerification.isPending ? "Sending..." : "Send Verification Code"}
           </button>
 
-          <label htmlFor="token" className="mb-1 mt-2 block">
-            Verification Code:
-          </label>
-          <input
-            id="token"
-            type="text"
-            placeholder="Enter code"
-            value={token}
-            onChange={(e) => setToken(e.target.value)}
-            className="block w-full border p-2"
-          />
-          <button
-            onClick={() => validateCode.mutate()}
-            disabled={!token || validateCode.isPending}
-            className="mt-2 w-full rounded-md bg-green-600 p-2 text-white disabled:bg-gray-400">
-            {validateCode.isPending ? "Verifying..." : "Verify Email"}
-          </button>
+          <div className={clsx("bg-red-100", { hidden: !message || message === "Error: 이미 가입된 이메일입니다." })}>
+            <label htmlFor="token" className="mb-1 mt-2 block">
+              Verification Code:
+            </label>
+
+            <input
+              id="token"
+              type="text"
+              placeholder="Enter code"
+              value={token}
+              onChange={(e) => setToken(e.target.value)}
+              className="block w-full border p-2"
+            />
+            <button
+              onClick={() => validateCode.mutate()}
+              disabled={!token || validateCode.isPending}
+              className="mt-2 w-full rounded-md bg-green-600 p-2 text-white disabled:bg-gray-400">
+              {validateCode.isPending ? "Verifying..." : "Verify Email"}
+            </button>
+          </div>
         </>
       ) : (
         <>
@@ -150,7 +157,7 @@ export default function SignUp() {
 
           <button
             onClick={() => registerUser.mutate()}
-            disabled={registerUser.isPending}
+            disabled={registerUser.isPending || !formData.name || !formData.password}
             className="w-full rounded-md bg-blue-600 p-2 text-white disabled:bg-gray-400">
             {registerUser.isPending ? "Registering..." : "Register"}
           </button>
@@ -158,6 +165,10 @@ export default function SignUp() {
       )}
 
       {message && <p className={`mt-2 ${message.startsWith("Error") ? "text-red-500" : "text-green-500"}`}>{message}</p>}
+
+      <div className={"mt-10 flex justify-center text-xl font-bold"}>
+        <Link href={"/"}>Home</Link>
+      </div>
     </div>
   );
 }
