@@ -58,8 +58,6 @@ export default function SignIn() {
       <h1 className="mb-4 text-xl font-semibold">Sign In</h1>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        {error && <p className="text-red-500">{error}</p>}
-
         <div>
           <label htmlFor="email" className="block text-sm font-medium">
             Email
@@ -94,6 +92,8 @@ export default function SignIn() {
           disabled={!formData.email || !formData.password}>
           {isLoading ? <AiOutlineLoading3Quarters className={"animate-spin text-xl"} /> : <div>Email 로그인</div>}
         </button>
+
+        {error && <p className="animate-pulse text-center text-red-500">{error}</p>}
       </form>
 
       <div className={"mt-10 flex justify-center hover:underline"}>
