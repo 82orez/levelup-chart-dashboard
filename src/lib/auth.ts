@@ -26,19 +26,20 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Email and password are required.");
         }
 
-        // 이메일로 사용자 찾기
+        // 이메일로 회원 가입 여부 판단
+        // 클라이언트로부터 넘겨 받은 이메일이 서버에 등록된 사용자인지 확인
         const user = await prisma.user.findUnique({
           where: { email: credentials.email },
         });
 
-        if (!user || !user.password) {
-          throw new Error("Invalid email or password.");
+        if (!user) {
+          throw new Error("가입되지 않은 이메일입니다.");
         }
 
         // 비밀번호 검증
         const isValidPassword = await compare(credentials.password, user.password);
         if (!isValidPassword) {
-          throw new Error("Invalid email or password.");
+          throw new Error("Invalid password.");
         }
 
         return { id: user.id, name: user.name, email: user.email };

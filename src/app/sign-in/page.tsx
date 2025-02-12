@@ -4,11 +4,13 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 export default function SignIn() {
   const router = useRouter();
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   // * 클라이언트 컴포넌트에서 로그인 session 정보 가져오기 : useSession()
   const { status, data } = useSession();
@@ -30,17 +32,24 @@ export default function SignIn() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setIsLoading(true);
 
-    const result = await signIn("credentials", {
-      email: formData.email,
-      password: formData.password,
-      redirect: false, // 페이지 이동 없이 상태만 반환받음
-    });
+    try {
+      const result = await signIn("credentials", {
+        email: formData.email,
+        password: formData.password,
+        redirect: false,
+      });
 
-    if (result?.error) {
-      setError(result.error || "An error occurred during sign in.");
-    } else {
-      router.push("/dashboard"); // 로그인 성공 시 대시보드로 이동
+      if (result?.error) {
+        setError(result.error || "An error occurred during sign in.");
+      } else {
+        router.push("/dashboard");
+      }
+    } catch (error) {
+      setError("An unexpected error occurred.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -81,9 +90,9 @@ export default function SignIn() {
 
         <button
           type="submit"
-          className="w-full rounded-md bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700"
+          className="flex h-12 w-full items-center justify-center rounded-md bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700"
           disabled={!formData.email || !formData.password}>
-          Sign In
+          {isLoading ? <AiOutlineLoading3Quarters className={"animate-spin text-xl"} /> : <div>Email 로그인</div>}
         </button>
       </form>
 
