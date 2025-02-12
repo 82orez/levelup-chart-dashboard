@@ -104,7 +104,7 @@ export default function SignUp() {
           <button
             onClick={() => sendVerification.mutate()}
             disabled={!isValidEmail(email) || sendVerification.isPending}
-            className="w-full rounded-md bg-blue-600 p-2 text-white disabled:bg-gray-400">
+            className="w-full rounded-md bg-blue-600 p-2 text-white hover:bg-blue-400">
             {sendVerification.isPending ? "Sending..." : "Send Verification Code"}
           </button>
 
@@ -158,7 +158,7 @@ export default function SignUp() {
           <button
             onClick={() => registerUser.mutate()}
             disabled={registerUser.isPending || !formData.name || !formData.password}
-            className="w-full rounded-md bg-blue-600 p-2 text-white disabled:bg-gray-400">
+            className="w-full rounded-md bg-blue-600 p-2 text-white hover:bg-blue-400">
             {registerUser.isPending ? "Registering..." : "Register"}
           </button>
         </>
@@ -166,7 +166,7 @@ export default function SignUp() {
 
       {message && <p className={`mt-2 ${message.startsWith("Error") ? "text-red-500" : "text-green-500"}`}>{message}</p>}
 
-      <div className={"mt-10 flex justify-center text-xl font-bold"}>
+      <div className={"mt-10 flex justify-center text-xl font-bold hover:underline"}>
         <Link href={"/"}>Home</Link>
       </div>
     </div>
