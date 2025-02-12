@@ -82,3 +82,12 @@ model VerificationToken {
 
   @@id([identifier, token])
 }
+
+model EmailVerificationToken {
+  id      String   @id @default(cuid())
+  email   String   @unique
+  token   String
+  expires DateTime
+
+  createdAt DateTime @default(now())
+}
