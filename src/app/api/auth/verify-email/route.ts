@@ -1,18 +1,8 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-// import nodemailer from "nodemailer";
 
 import { Resend } from "resend";
 import crypto from "crypto";
-
-// Nodemailer 설정 (Gmail 또는 SMTP 사용)
-// const transporter = nodemailer.createTransport({
-//   service: "gmail",
-//   auth: {
-//     user: process.env.EMAIL_USER, // .env에서 이메일 계정 설정
-//     pass: process.env.EMAIL_PASS, // 앱 비밀번호 사용
-//   },
-// });
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -40,14 +30,6 @@ export async function POST(req: Request) {
         expires: new Date(Date.now() + 5 * 60 * 1000),
       },
     });
-
-    // 이메일 전송
-    // await transporter.sendMail({
-    //   from: process.env.EMAIL_USER,
-    //   to: email,
-    //   subject: "Your verification code",
-    //   text: `Your verification code is: ${token}`,
-    // });
 
     const data = await resend.emails.send({
       from: "Your Service Name <no-reply@supaneer.com>",

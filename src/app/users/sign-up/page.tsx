@@ -3,19 +3,65 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
-import Link from "next/link";
 
-export default function Register() {
+export default function SignUp() {
   const router = useRouter();
-  const [formData, setFormData] = useState({ email: "", password: "", name: "" });
-  const [error, setError] = useState<string | null>(null);
 
-  const mutation = useMutation({
+  // 상태 관리
+  const [step, setStep] = useState<"verify" | "register">("verify");
+  const [email, setEmail] = useState("");
+  const [token, setToken] = useState("");
+  const [isVerified, setIsVerified] = useState(false);
+  const [message, setMessage] = useState("");
+  const [formData, setFormData] = useState({ name: "", password: "" });
+
+  // 이메일 인증 요청
+  const sendVerification = useMutation({
+    mutationFn: async () => {
+      const response = await fetch("/api/auth/verify-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to send verification code.");
+      }
+      return response.json();
+    },
+    onSuccess: () => setMessage("Verification code sent to email."),
+    onError: (error) => setMessage(`Error: ${error.message}`),
+  });
+
+  // 인증 코드 확인
+  const validateCode = useMutation({
+    mutationFn: async () => {
+      const response = await fetch("/api/auth/validate-code", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, token }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Invalid verification code.");
+      }
+      return response.json();
+    },
+    onSuccess: () => {
+      setIsVerified(true);
+      setStep("register");
+      setMessage("Email verified successfully!");
+    },
+    onError: (error) => setMessage(`Error: ${error.message}`),
+  });
+
+  // 회원가입 요청
+  const registerUser = useMutation({
     mutationFn: async () => {
       const response = await fetch("/api/auth/register", {
         method: "POST",
-        headers: { "Content-Type": "application/json" }, // Content-Type 확인
-        body: JSON.stringify(formData), // JSON body 가 null 이 아닌지 확인
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...formData, email }),
       });
 
       if (!response.ok) {
@@ -30,80 +76,88 @@ export default function Register() {
       router.push("/login");
     },
     onError: (err: Error) => {
-      setError(err.message);
+      setMessage(`Error: ${err.message}`);
     },
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    console.log(formData);
-    mutation.mutate();
-  };
-
   return (
     <div className="mx-auto mt-10 max-w-md rounded-lg bg-white p-6 shadow-lg">
-      <h1 className="mb-4 text-xl font-semibold">Register</h1>
+      <h1 className="mb-4 text-xl font-semibold">Sign Up</h1>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {error && <p className="text-red-500">{error}</p>}
-        <div>
-          <label htmlFor="name" className="block text-sm font-medium">
-            Name
+      {step === "verify" ? (
+        <>
+          <label htmlFor="email" className="mb-1 block">
+            Email:
           </label>
           <input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            className="mt-1 block w-full rounded-md border border-gray-300 p-2"
-          />
-        </div>
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium">
-            Email
-          </label>
-          <input
-            type="email"
             id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="mt-1 block w-full rounded-md border border-gray-300 p-2"
+            type="email"
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="mb-2 block w-full border p-2"
           />
-        </div>
-        <div>
-          <label htmlFor="password" className="block text-sm font-medium">
-            Password
+          <button
+            onClick={() => sendVerification.mutate()}
+            disabled={sendVerification.isPending}
+            className="w-full rounded-md bg-blue-600 p-2 text-white disabled:bg-gray-400">
+            {sendVerification.isPending ? "Sending..." : "Send Verification Code"}
+          </button>
+
+          <label htmlFor="token" className="mb-1 mt-2 block">
+            Verification Code:
           </label>
           <input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            className="mt-1 block w-full rounded-md border border-gray-300 p-2"
+            id="token"
+            type="text"
+            placeholder="Enter code"
+            value={token}
+            onChange={(e) => setToken(e.target.value)}
+            className="block w-full border p-2"
           />
-        </div>
-        <button
-          type="submit"
-          className="w-full rounded-md bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700"
-          disabled={mutation.isPending}>
-          {mutation.isPending ? "Registering..." : "Register"}
-        </button>
-      </form>
+          <button
+            onClick={() => validateCode.mutate()}
+            disabled={!token || validateCode.isPending}
+            className="mt-2 w-full rounded-md bg-green-600 p-2 text-white disabled:bg-gray-400">
+            {validateCode.isPending ? "Verifying..." : "Verify Email"}
+          </button>
+        </>
+      ) : (
+        <>
+          <label htmlFor="name" className="mb-1 block">
+            Name:
+          </label>
+          <input
+            id="name"
+            type="text"
+            placeholder="Enter your name"
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            className="mb-2 block w-full border p-2"
+          />
 
-      <div className="mt-10 flex justify-center">
-        <Link href={"/"} className={"hover:underline"}>
-          To Home
-        </Link>
-      </div>
+          <label htmlFor="password" className="mb-1 block">
+            Password:
+          </label>
+          <input
+            id="password"
+            type="password"
+            placeholder="Enter your password"
+            value={formData.password}
+            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+            className="mb-2 block w-full border p-2"
+          />
+
+          <button
+            onClick={() => registerUser.mutate()}
+            disabled={registerUser.isPending}
+            className="w-full rounded-md bg-blue-600 p-2 text-white disabled:bg-gray-400">
+            {registerUser.isPending ? "Registering..." : "Register"}
+          </button>
+        </>
+      )}
+
+      {message && <p className={`mt-2 ${message.startsWith("Error") ? "text-red-500" : "text-green-500"}`}>{message}</p>}
     </div>
   );
 }
