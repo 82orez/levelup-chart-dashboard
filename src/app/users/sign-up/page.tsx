@@ -166,8 +166,8 @@ export default function SignUp() {
 
       {message && <p className={`mt-2 ${message.startsWith("Error") ? "text-red-500" : "text-green-500"}`}>{message}</p>}
 
-      <div className={"mt-10 flex justify-center text-xl font-bold hover:underline"}>
-        <Link href={"/"}>Home</Link>
+      <div className={"mt-10 flex justify-center hover:underline"}>
+        <Link href={"/"}>To the Home</Link>
       </div>
     </div>
   );

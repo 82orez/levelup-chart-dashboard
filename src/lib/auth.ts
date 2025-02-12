@@ -1,6 +1,8 @@
 import { NextAuthOptions } from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
+import { compare } from "bcryptjs";
+import CredentialsProvider from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
 import Naver from "next-auth/providers/naver";
 import Kakao from "next-auth/providers/kakao";
@@ -13,6 +15,35 @@ export const authOptions: NextAuthOptions = {
     updateAge: 60 * 60 * 2, // 2 hours
   },
   providers: [
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        email: { label: "Email", type: "email", placeholder: "user@example.com" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error("Email and password are required.");
+        }
+
+        // 이메일로 사용자 찾기
+        const user = await prisma.user.findUnique({
+          where: { email: credentials.email },
+        });
+
+        if (!user || !user.password) {
+          throw new Error("Invalid email or password.");
+        }
+
+        // 비밀번호 검증
+        const isValidPassword = await compare(credentials.password, user.password);
+        if (!isValidPassword) {
+          throw new Error("Invalid email or password.");
+        }
+
+        return { id: user.id, name: user.name, email: user.email };
+      },
+    }),
     Google({
       clientId: process.env.GOOGLE_CLIENT_ID || "",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
@@ -26,7 +57,7 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.KAKAO_CLIENT_SECRET || "",
     }),
   ],
-  pages: { signIn: "/users/sign-in" },
+  pages: { signIn: "/sign-in" },
   callbacks: {
     jwt: async ({ user, token }) => {
       console.log("user: ", user);
