@@ -77,7 +77,8 @@ export default function SignUp() {
     },
     onSuccess: (data) => {
       setMessage(data.message || "Registration successful!");
-      router.push("/login");
+      // * 회원 가입에 성공하면 이동할 page
+      router.push("/sign-in");
     },
     onError: (error: Error) => {
       setMessage(`Error: ${error.message}`);

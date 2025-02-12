@@ -38,7 +38,7 @@ export default function SignIn() {
     });
 
     if (result?.error) {
-      setError("Invalid email or password.");
+      setError(result.error || "An error occurred during sign in.");
     } else {
       router.push("/dashboard"); // 로그인 성공 시 대시보드로 이동
     }
@@ -79,7 +79,10 @@ export default function SignIn() {
           />
         </div>
 
-        <button type="submit" className="w-full rounded-md bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700">
+        <button
+          type="submit"
+          className="w-full rounded-md bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700"
+          disabled={!formData.email || !formData.password}>
           Sign In
         </button>
       </form>
