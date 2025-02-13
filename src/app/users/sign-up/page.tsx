@@ -87,26 +87,26 @@ export default function SignUp() {
 
   return (
     <div className="mx-auto mt-10 max-w-md rounded-lg bg-white p-6 shadow-lg">
-      <h1 className="mb-4 text-xl font-semibold">Sign Up</h1>
+      <h1 className="mb-10 text-xl font-semibold">회원 가입하기</h1>
 
       {step === "verify" ? (
         <>
-          <label htmlFor="email" className="mb-1 block">
-            Email:
+          <label htmlFor="email" className="mb-2 block">
+            사용하실 이메일을 입력해 주세요.
           </label>
           <input
             id="email"
             type="email"
-            placeholder="Enter your email"
+            placeholder="abc@example.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="mb-2 block w-full border p-2"
+            className="mb-3 block w-full border p-2"
           />
           <button
             onClick={() => sendVerification.mutate()}
             disabled={!isValidEmail(email) || sendVerification.isPending}
             className="w-full rounded-md bg-blue-600 p-2 text-white hover:bg-blue-400">
-            {sendVerification.isPending ? "Sending..." : "Send Verification Code"}
+            {sendVerification.isPending ? "인증 코드 보내는 중..." : "이메일로 인증 코드 보내기"}
           </button>
 
           <div className={clsx("bg-red-100", { hidden: !message || message === "Error: 이미 가입된 이메일입니다." })}>
