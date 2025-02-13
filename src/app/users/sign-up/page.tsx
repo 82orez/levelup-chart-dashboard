@@ -16,11 +16,11 @@ export default function SignUp() {
   const [isVerified, setIsVerified] = useState(false);
   const [message, setMessage] = useState("");
   const [formData, setFormData] = useState({ name: "", password: "" });
-  const [showPassword, setShowPassword] = useState(false); // 비밀번호 표시 상태 추가
+  const [confirmPassword, setConfirmPassword] = useState(""); // 비밀번호 확인 입력 상태 추가
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const isValidEmail = (email: string) => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  };
+  const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   const sendVerification = useMutation({
     mutationFn: async () => {
@@ -89,6 +89,8 @@ export default function SignUp() {
       setMessage(`Error: ${error.message}`);
     },
   });
+
+  const isPasswordMatch = formData.password === confirmPassword; // 비밀번호 일치 여부 확인
 
   return (
     <div className="mx-auto mt-10 max-w-md rounded-lg bg-white p-6 shadow-lg">
@@ -177,9 +179,37 @@ export default function SignUp() {
             </button>
           </div>
 
+          <label htmlFor="confirmPassword" className="mb-1 block">
+            비밀번호를 확인해 주세요.
+          </label>
+          <div className="relative">
+            <input
+              id="confirmPassword"
+              type={showConfirmPassword ? "text" : "password"}
+              placeholder="비밀번호를 확인"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="mb-3 block w-full border p-2"
+            />
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              className={clsx("absolute right-2 top-2.5 text-2xl text-gray-600 hover:text-gray-800", {
+                hidden: !formData.password || !confirmPassword,
+              })}>
+              {showConfirmPassword ? <GoEye /> : <GoEyeClosed />}
+            </button>
+          </div>
+
+          {!isPasswordMatch ? (
+            <p className="mb-3 animate-pulse text-red-500">비밀번호가 일치하지 않습니다.</p>
+          ) : (
+            <p className="mb-3 text-green-500">비밀번호가 일치합니다.</p>
+          )}
+
           <button
+            disabled={!isPasswordMatch || registerUser.isPending}
             onClick={() => registerUser.mutate()}
-            disabled={registerUser.isPending || !formData.name || !formData.password}
             className="w-full rounded-md bg-blue-600 p-2 text-white hover:bg-blue-400">
             {registerUser.isPending ? "회원 가입 중..." : "회원 가입 완료하기"}
           </button>
