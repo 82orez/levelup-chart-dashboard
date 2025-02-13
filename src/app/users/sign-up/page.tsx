@@ -51,7 +51,7 @@ export default function SignUp() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || "Invalid verification code.");
+        throw new Error(errorData.message || "잘못된 인증코드입니다.");
       }
       return response.json();
     },
@@ -90,10 +90,12 @@ export default function SignUp() {
 
   return (
     <div className="mx-auto mt-10 max-w-md rounded-lg bg-white p-6 shadow-lg">
-      <h1 className="mb-10 text-xl font-semibold">회원 가입하기</h1>
+      <h1 className="mb-10 text-2xl font-semibold">회원 가입하기</h1>
 
       {step === "verify" ? (
         <>
+          <p className={"mb-4 border-b-4 pb-1 text-xl"}>Step 1. 이메일 입력하기</p>
+
           <label htmlFor="email" className="mb-2 block">
             사용하실 이메일을 입력해 주세요.
           </label>
@@ -114,29 +116,33 @@ export default function SignUp() {
         </>
       ) : step === "register" ? (
         <>
-          <div className={clsx("bg-red-100", { hidden: !message || message === "Error: 이미 가입된 이메일입니다." })}>
-            <label htmlFor="token" className="mb-1 mt-2 block">
-              Verification Code:
+          <p className={"mb-4 border-b-4 pb-1 text-xl"}>Step 2. 인증코드 입력하기</p>
+
+          <div className={clsx("", { hidden: !message || message === "Error: 이미 가입된 이메일입니다." })}>
+            <label htmlFor="token" className="mb-2 mt-2 block">
+              인증코드를 입력해 주세요.
             </label>
 
             <input
               id="token"
               type="text"
-              placeholder="Enter code"
+              placeholder="6자리 인증코드"
               value={token}
               onChange={(e) => setToken(e.target.value)}
-              className="block w-full border p-2"
+              className="mb-1 block w-full border p-2"
             />
             <button
               onClick={() => validateCode.mutate()}
               disabled={!token || validateCode.isPending}
-              className="mt-2 w-full rounded-md bg-green-600 p-2 text-white disabled:bg-gray-400">
-              {validateCode.isPending ? "Verifying..." : "Verify Email"}
+              className="mt-2 w-full rounded-md bg-green-600 p-2 text-white hover:bg-green-500">
+              {validateCode.isPending ? "인증 중..." : "인증하기"}
             </button>
           </div>
         </>
       ) : (
         <>
+          <p className={"mb-4 border-b-4 pb-1 text-xl"}>Step 3. 회원가입 완료하기</p>
+
           <label htmlFor="name" className="mb-1 block">
             Name:
           </label>

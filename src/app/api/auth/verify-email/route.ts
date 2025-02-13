@@ -46,7 +46,7 @@ export async function POST(req: Request) {
       text: `Your verification code is: ${token}`,
     });
 
-    return NextResponse.json({ message: "Verification code sent." });
+    return NextResponse.json({ message: "인증코드가 발송되었습니다." });
   } catch (error) {
     console.error("Email verification error:", error);
     return NextResponse.json({ error: "Failed to send verification code." }, { status: 500 });
