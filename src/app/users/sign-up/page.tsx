@@ -20,7 +20,14 @@ export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  // 이메일 유효성 검사
   const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  // 비밀번호 유효성 검사 (영문 포함 6자리 이상)
+  const isValidPassword = (password: string) => /^(?=.*[A-Za-z]).{6,}$/.test(password);
+
+  const isPasswordMatch = formData.password === confirmPassword; // 비밀번호 일치 여부 확인
+  const isPasswordValid = isValidPassword(formData.password); // 비밀번호 유효성 확인
 
   const sendVerification = useMutation({
     mutationFn: async () => {
@@ -90,8 +97,6 @@ export default function SignUp() {
     },
   });
 
-  const isPasswordMatch = formData.password === confirmPassword; // 비밀번호 일치 여부 확인
-
   return (
     <div className="mx-auto mt-10 max-w-md rounded-lg bg-white p-6 shadow-lg">
       <h1 className="mb-10 text-2xl font-semibold">회원 가입하기</h1>
@@ -146,7 +151,6 @@ export default function SignUp() {
       ) : (
         <>
           <p className={"mb-4 border-b-4 pb-1 text-xl"}>Step 3. 비밀번호 등록하기</p>
-
           <label htmlFor="name" className="mb-1 block">
             Name:
           </label>
@@ -158,7 +162,6 @@ export default function SignUp() {
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             className="mb-2 block w-full border p-2"
           />
-
           <label htmlFor="password" className="mb-1 block">
             비밀 번호를 입력해 주세요.
           </label>
@@ -178,6 +181,8 @@ export default function SignUp() {
               {showPassword ? <GoEye /> : <GoEyeClosed />}
             </button>
           </div>
+
+          {!isPasswordValid && formData.password && <p className="mb-3 text-red-500">비밀번호는 영문을 포함하여 6자리 이상이어야 합니다.</p>}
 
           <label htmlFor="confirmPassword" className="mb-1 block">
             비밀번호를 확인해 주세요.
