@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { GoEye, GoEyeClosed } from "react-icons/go";
 
 export default function SignIn() {
   const router = useRouter();
@@ -72,7 +73,7 @@ export default function SignIn() {
           />
         </div>
 
-        <div>
+        <div className="relative">
           <label htmlFor="password" className="block text-sm font-medium">
             Password
           </label>
@@ -84,6 +85,7 @@ export default function SignIn() {
             onChange={handleChange}
             className="mt-1 block w-full rounded-md border border-gray-300 p-2"
           />
+          <GoEyeClosed className={"absolute right-5 top-8 text-2xl"} />
         </div>
 
         <button
