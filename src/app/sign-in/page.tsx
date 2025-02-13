@@ -6,12 +6,14 @@ import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { GoEye, GoEyeClosed } from "react-icons/go";
+import clsx from "clsx";
 
 export default function SignIn() {
   const router = useRouter();
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // 비밀번호 표시 상태 추가
 
   // * 클라이언트 컴포넌트에서 로그인 session 정보 가져오기 : useSession()
   const { status, data } = useSession();
@@ -56,7 +58,7 @@ export default function SignIn() {
 
   return (
     <div className="mx-auto mt-10 max-w-md rounded-lg bg-white p-6 shadow-lg">
-      <h1 className="mb-4 text-xl font-semibold">Sign In</h1>
+      <h1 className="mb-10 text-xl font-semibold">로그인 하기</h1>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
@@ -70,6 +72,7 @@ export default function SignIn() {
             value={formData.email}
             onChange={handleChange}
             className="mt-1 block w-full rounded-md border border-gray-300 p-2"
+            placeholder="abc@example.com"
           />
         </div>
 
@@ -78,21 +81,27 @@ export default function SignIn() {
             Password
           </label>
           <input
-            type="password"
+            type={showPassword ? "text" : "password"} // showPassword 상태에 따라 타입 변경
             id="password"
             name="password"
             value={formData.password}
             onChange={handleChange}
             className="mt-1 block w-full rounded-md border border-gray-300 p-2"
+            placeholder="비밀 번호를 입력해주세요."
           />
-          <GoEyeClosed className={"absolute right-5 top-8 text-2xl"} />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className={clsx("absolute right-5 top-[2.1rem] text-2xl text-gray-600 hover:text-gray-800", { hidden: !formData.password })}>
+            {showPassword ? <GoEye /> : <GoEyeClosed />}
+          </button>
         </div>
 
         <button
           type="submit"
           className="flex h-12 w-full items-center justify-center rounded-md bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700"
           disabled={!formData.email || !formData.password}>
-          {isLoading ? <AiOutlineLoading3Quarters className={"animate-spin text-xl"} /> : <div>Email 로그인</div>}
+          {isLoading ? <AiOutlineLoading3Quarters className="animate-spin text-xl" /> : <div>Email 로그인</div>}
         </button>
 
         {error && <p className="animate-pulse text-center text-red-500">{error}</p>}

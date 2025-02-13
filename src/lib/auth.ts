@@ -39,7 +39,7 @@ export const authOptions: NextAuthOptions = {
         // 비밀번호 검증
         const isValidPassword = await compare(credentials.password, user.password);
         if (!isValidPassword) {
-          throw new Error("Invalid password.");
+          throw new Error("비밀 번호가 일치하지 않습니다.");
         }
 
         return { id: user.id, name: user.name, email: user.email };
