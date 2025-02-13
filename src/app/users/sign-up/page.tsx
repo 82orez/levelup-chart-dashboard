@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
 import Link from "next/link";
+import { GoEye, GoEyeClosed } from "react-icons/go";
 
 export default function SignUp() {
   const router = useRouter();
@@ -15,6 +16,7 @@ export default function SignUp() {
   const [isVerified, setIsVerified] = useState(false);
   const [message, setMessage] = useState("");
   const [formData, setFormData] = useState({ name: "", password: "" });
+  const [showPassword, setShowPassword] = useState(false); // 비밀번호 표시 상태 추가
 
   const isValidEmail = (email: string) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -141,7 +143,7 @@ export default function SignUp() {
         </>
       ) : (
         <>
-          <p className={"mb-4 border-b-4 pb-1 text-xl"}>Step 3. 회원가입 완료하기</p>
+          <p className={"mb-4 border-b-4 pb-1 text-xl"}>Step 3. 비밀번호 등록하기</p>
 
           <label htmlFor="name" className="mb-1 block">
             Name:
@@ -156,22 +158,30 @@ export default function SignUp() {
           />
 
           <label htmlFor="password" className="mb-1 block">
-            Password:
+            비밀 번호를 입력해 주세요.
           </label>
-          <input
-            id="password"
-            type="password"
-            placeholder="Enter your password"
-            value={formData.password}
-            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-            className="mb-2 block w-full border p-2"
-          />
+          <div className={"relative"}>
+            <input
+              id="password"
+              type={showPassword ? "text" : "password"} // showPassword 상태에 따라 타입 변경
+              placeholder="영문 포함 6자리 이상"
+              value={formData.password}
+              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+              className="mb-3 block w-full border p-2"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className={clsx("absolute right-2 top-2.5 text-2xl text-gray-600 hover:text-gray-800", { hidden: !formData.password })}>
+              {showPassword ? <GoEye /> : <GoEyeClosed />}
+            </button>
+          </div>
 
           <button
             onClick={() => registerUser.mutate()}
             disabled={registerUser.isPending || !formData.name || !formData.password}
             className="w-full rounded-md bg-blue-600 p-2 text-white hover:bg-blue-400">
-            {registerUser.isPending ? "Registering..." : "Register"}
+            {registerUser.isPending ? "회원 가입 중..." : "회원 가입 완료하기"}
           </button>
         </>
       )}

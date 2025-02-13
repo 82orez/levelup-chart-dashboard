@@ -23,7 +23,7 @@ export async function POST(req: Request) {
       where: { email },
     });
 
-    return NextResponse.json({ message: "Verification successful." });
+    return NextResponse.json({ message: "인증에 성공하였습니다." });
   } catch (error) {
     console.error("Code validation error:", error);
     return NextResponse.json({ error: "Failed to validate code." }, { status: 500 });
