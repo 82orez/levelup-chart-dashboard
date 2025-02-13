@@ -206,11 +206,13 @@ export default function SignUp() {
             </button>
           </div>
 
-          {!isPasswordMatch ? (
-            <p className="mb-3 animate-pulse text-red-500">비밀번호가 일치하지 않습니다.</p>
-          ) : (
-            <p className="mb-3 text-green-500">비밀번호가 일치합니다.</p>
-          )}
+          <div className={clsx("", { hidden: !formData.password || !confirmPassword })}>
+            {!isPasswordMatch ? (
+              <p className="mb-3 animate-pulse text-red-500">비밀번호가 일치하지 않습니다.</p>
+            ) : (
+              <p className="mb-3 text-green-500">비밀번호가 일치합니다.</p>
+            )}
+          </div>
 
           <button
             disabled={!isPasswordMatch || registerUser.isPending}
