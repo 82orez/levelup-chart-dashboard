@@ -9,7 +9,7 @@ import Link from "next/link";
 export default function SignUp() {
   const router = useRouter();
 
-  const [step, setStep] = useState<"verify" | "register">("verify");
+  const [step, setStep] = useState<"verify" | "register" | "third">("verify");
   const [email, setEmail] = useState("");
   const [token, setToken] = useState("");
   const [isVerified, setIsVerified] = useState(false);
@@ -34,7 +34,10 @@ export default function SignUp() {
       }
       return response.json();
     },
-    onSuccess: (data) => setMessage(data.message || "Verification code sent to email."),
+    onSuccess: (data) => {
+      setMessage(data.message || "Verification code sent to email.");
+      setStep("register");
+    },
     onError: (error: Error) => setMessage(`Error: ${error.message}`),
   });
 
@@ -54,7 +57,7 @@ export default function SignUp() {
     },
     onSuccess: (data) => {
       setIsVerified(true);
-      setStep("register");
+      setStep("third");
       setMessage(data.message || "Email verified successfully!");
     },
     onError: (error: Error) => setMessage(`Error: ${error.message}`),
@@ -108,7 +111,9 @@ export default function SignUp() {
             className="w-full rounded-md bg-blue-600 p-2 text-white hover:bg-blue-400">
             {sendVerification.isPending ? "인증 코드 보내는 중..." : "이메일로 인증 코드 보내기"}
           </button>
-
+        </>
+      ) : step === "register" ? (
+        <>
           <div className={clsx("bg-red-100", { hidden: !message || message === "Error: 이미 가입된 이메일입니다." })}>
             <label htmlFor="token" className="mb-1 mt-2 block">
               Verification Code:
@@ -168,7 +173,7 @@ export default function SignUp() {
       {message && <p className={`mt-2 ${message.startsWith("Error") ? "text-red-500" : "text-green-500"}`}>{message}</p>}
 
       <div className={"mt-10 flex justify-center hover:underline"}>
-        <Link href={"/"}>To the Home</Link>
+        <Link href={"/"}>Back to Home</Link>
       </div>
     </div>
   );
