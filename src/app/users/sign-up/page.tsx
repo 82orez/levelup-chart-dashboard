@@ -103,7 +103,7 @@ export default function SignUp() {
 
       {step === "verify" ? (
         <>
-          <p className={"mb-4 border-b-4 pb-1 text-xl"}>Step 1. 이메일 입력하기</p>
+          <p className={"mb-4 border-b-4 border-gray-400 pb-1 text-xl"}>Step 1. 이메일 입력하기</p>
 
           <label htmlFor="email" className="mb-2 block">
             사용하실 이메일을 입력해 주세요.
@@ -125,7 +125,7 @@ export default function SignUp() {
         </>
       ) : step === "register" ? (
         <>
-          <p className={"mb-4 border-b-4 pb-1 text-xl"}>Step 2. 인증코드 입력하기</p>
+          <p className={"mb-4 border-b-4 border-gray-400 pb-1 text-xl"}>Step 2. 인증코드 입력하기</p>
 
           <div className={clsx("", { hidden: !message || message === "Error: 이미 가입된 이메일입니다." })}>
             <label htmlFor="token" className="mb-2 mt-2 block">
@@ -150,7 +150,7 @@ export default function SignUp() {
         </>
       ) : (
         <>
-          <p className={"mb-4 border-b-4 pb-1 text-xl"}>Step 3. 비밀번호 등록하기</p>
+          <p className={"mb-4 border-b-4 border-gray-400 pb-1 text-xl"}>Step 3. 비밀번호 등록하기</p>
           <label htmlFor="name" className="mb-1 block">
             Name:
           </label>
@@ -215,7 +215,7 @@ export default function SignUp() {
           </div>
 
           <button
-            disabled={!isPasswordMatch || registerUser.isPending}
+            disabled={!isPasswordMatch || !isPasswordMatch || registerUser.isPending}
             onClick={() => registerUser.mutate()}
             className="w-full rounded-md bg-blue-600 p-2 text-white hover:bg-blue-400">
             {registerUser.isPending ? "회원 가입 중..." : "회원 가입 완료하기"}
@@ -223,7 +223,8 @@ export default function SignUp() {
         </>
       )}
 
-      {message && <p className={`mt-2 ${message.startsWith("Error") ? "text-red-500" : "text-green-500"}`}>{message}</p>}
+      {message.startsWith("Error") && <p className={"mt-2 text-red-500"}>{message}</p>}
+      {/*{message && <p className={`mt-2 ${message.startsWith("Error") ? "text-red-500" : "text-green-500"}`}>{message}</p>}*/}
 
       <div className={"mt-10 flex justify-center hover:underline"}>
         <Link href={"/"}>Back to Home</Link>
