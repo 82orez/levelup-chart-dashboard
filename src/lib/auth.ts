@@ -48,7 +48,7 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.KAKAO_CLIENT_SECRET || "",
     }),
   ],
-  pages: { signIn: "/sign-in" },
+  pages: { signIn: "/sign-in", error: "/error" },
   callbacks: {
     jwt: async ({ user, token }) => {
       console.log("user: ", user);
@@ -66,5 +66,50 @@ export const authOptions: NextAuthOptions = {
         ...token,
       },
     }),
+    signIn: async ({ account, user, profile, credentials, email }) => {
+      console.log("account: ", account);
+      console.log("profile: ", profile);
+      console.log("user: ", user);
+      console.log("email: ", email);
+      console.log("credentials: ", credentials);
+
+      // * provider 마다 다른 가입 email 정보를 하나로 통일해 주는 과정을 거친다.
+      let forCheckEmail = "";
+      //
+      // if (account?.provider === "kakao") {
+      //   forCheckEmail = profile?.["kakao_account"]?.email; // 실제 카카오 프로필의 이메일 경로를 확인해야 함
+      // } else {
+      //   forCheckEmail = user.email || "";
+      // }
+
+      if (account?.provider === "kakao") {
+        forCheckEmail = profile?.["kakao_account"]?.email; // 실제 카카오 프로필의 이메일 경로를 확인해야 함
+
+        const existingUser = await prisma.user.findFirst({
+          where: {
+            AND: [{ email: forCheckEmail }, { name: "email" }],
+          },
+        });
+
+        if (existingUser) {
+          // * error 를 표시할 클라이언트 경로 + 쿼리문 (여기에서는 error=EmailExists)
+          return "/error?error=EmailExists";
+        }
+      }
+
+      // let checkEmailOrSocial;
+      //
+      // if (forCheckEmail && credentials) {
+      //   checkEmailOrSocial = "credentials";
+      // } else if (forCheckEmail && !credentials) {
+      //   checkEmailOrSocial = "social";
+      // }
+
+      // if (forCheckEmail && forCheckEmail) {
+      //   // ! 경로 유의
+      //   return "/error?error=EmailExists";
+      // }
+      return true;
+    },
   },
 };
