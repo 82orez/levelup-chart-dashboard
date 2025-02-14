@@ -10,7 +10,7 @@ import { GoEye, GoEyeClosed } from "react-icons/go";
 export default function SignUp() {
   const router = useRouter();
 
-  const [step, setStep] = useState<"verify" | "register" | "third">("verify");
+  const [step, setStep] = useState<"inputEmail" | "verifyCode" | "inputPassword">("inputEmail");
   const [email, setEmail] = useState("");
   const [token, setToken] = useState("");
   const [isVerified, setIsVerified] = useState(false);
@@ -45,7 +45,7 @@ export default function SignUp() {
     },
     onSuccess: (data) => {
       setMessage(data.message || "Verification code sent to email.");
-      setStep("register");
+      setStep("verifyCode");
     },
     onError: (error: Error) => setMessage(`Error: ${error.message}`),
   });
@@ -66,7 +66,7 @@ export default function SignUp() {
     },
     onSuccess: (data) => {
       setIsVerified(true);
-      setStep("third");
+      setStep("inputPassword");
       setMessage(data.message || "Email verified successfully!");
     },
     onError: (error: Error) => setMessage(`Error: ${error.message}`),
@@ -89,6 +89,7 @@ export default function SignUp() {
     },
     onSuccess: (data) => {
       setMessage(data.message || "Registration successful!");
+      alert("회원 가입에 성공하셨습니다. 로그인 페이지로 이동합니다.");
       // * 회원 가입에 성공하면 이동할 page
       router.push("/sign-in");
     },
@@ -101,9 +102,9 @@ export default function SignUp() {
     <div className="mx-auto mt-10 max-w-md rounded-lg bg-white p-6 shadow-lg">
       <h1 className="mb-10 text-2xl font-semibold">회원 가입하기</h1>
 
-      {step === "verify" ? (
+      {step === "inputEmail" ? (
         <>
-          <p className={"mb-4 border-b-4 border-gray-400 pb-1 text-xl"}>Step 1. 이메일 입력하기</p>
+          <p className={"mb-4 border-b-4 border-blue-400 pb-1 text-xl"}>Step 1. 이메일 입력하기</p>
 
           <label htmlFor="email" className="mb-2 block">
             사용하실 이메일을 입력해 주세요.
@@ -123,9 +124,9 @@ export default function SignUp() {
             {sendVerification.isPending ? "인증 코드 보내는 중..." : "이메일로 인증 코드 보내기"}
           </button>
         </>
-      ) : step === "register" ? (
+      ) : step === "verifyCode" ? (
         <>
-          <p className={"mb-4 border-b-4 border-gray-400 pb-1 text-xl"}>Step 2. 인증코드 입력하기</p>
+          <p className={"mb-4 border-b-4 border-green-400 pb-1 text-xl"}>Step 2. 인증코드 입력하기</p>
 
           <div className={clsx("", { hidden: !message || message === "Error: 이미 가입된 이메일입니다." })}>
             <label htmlFor="token" className="mb-2 mt-2 block">
@@ -150,7 +151,7 @@ export default function SignUp() {
         </>
       ) : (
         <>
-          <p className={"mb-4 border-b-4 border-gray-400 pb-1 text-xl"}>Step 3. 비밀번호 등록하기</p>
+          <p className={"mb-4 border-b-4 border-blue-400 pb-1 text-xl"}>Step 3. 비밀번호 등록하기</p>
           <label htmlFor="name" className="mb-1 block">
             Name:
           </label>
