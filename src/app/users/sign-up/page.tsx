@@ -60,18 +60,18 @@ export default function SignUp() {
         body: JSON.stringify({ email, token }),
       });
 
+      const data = await response.json();
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "잘못된 인증코드입니다.");
+        throw new Error(data.message || "Invalid or expired token.");
       }
-      return response.json();
+      return data;
     },
     onSuccess: (data) => {
       setIsVerified(true);
       setStep("inputPassword");
       setMessage(data.message || "Email verified successfully!");
     },
-    onError: (error: Error) => setMessage(`Error: ${error.message}`),
+    onError: (error: any) => setMessage(`Error: ${error.message}`),
   });
 
   const registerUser = useMutation({
@@ -82,21 +82,21 @@ export default function SignUp() {
         body: JSON.stringify({ ...formData, email }),
       });
 
+      const data = await response.json();
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Registration failed");
+        throw new Error(data.message || "Registration failed");
       }
 
-      return response.json();
+      return data;
     },
     onSuccess: (data) => {
       setMessage(data.message || "Registration successful!");
-      alert("회원 가입에 성공하셨습니다. 로그인 페이지로 이동합니다.");
+      alert(`${data.message}`);
       // * 회원 가입에 성공하면 이동할 page
       router.push("/sign-in");
     },
-    onError: (error: Error) => {
-      setMessage(`Error: ${error.message}`);
+    onError: (error: any) => {
+      setMessage(`Error: ${error.message} 로그인 페이지로 이동합니다.`);
     },
   });
 

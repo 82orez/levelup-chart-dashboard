@@ -6,7 +6,7 @@ export async function POST(req: Request) {
     const { email, token } = await req.json();
 
     if (!email || !token) {
-      return NextResponse.json({ error: "Email and token are required." }, { status: 400 });
+      return NextResponse.json({ message: "Email and token are required." }, { status: 400 });
     }
 
     // 인증 코드 확인
@@ -15,7 +15,7 @@ export async function POST(req: Request) {
     });
 
     if (!verificationToken || verificationToken.token !== token) {
-      return NextResponse.json({ error: "Invalid or expired token." }, { status: 400 });
+      return NextResponse.json({ message: "잘못된 인증코드입니다." }, { status: 400 });
     }
 
     // 인증 성공 시, 인증 코드 삭제
@@ -26,6 +26,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: "인증에 성공하였습니다." });
   } catch (error) {
     console.error("Code validation error:", error);
-    return NextResponse.json({ error: "Failed to validate code." }, { status: 500 });
+    return NextResponse.json({ message: "Failed to validate code." }, { status: 500 });
   }
 }
