@@ -10,16 +10,21 @@ export async function POST(req: Request) {
     const { email } = await req.json();
 
     if (!email) {
-      return NextResponse.json({ error: "Email is required." }, { status: 400 });
+      return NextResponse.json({ message: "Email is required." }, { status: 400 });
     }
 
     // 이메일이 user 테이블에 이미 존재하는지 확인
     const existingUser = await prisma.user.findUnique({
       where: { email },
+      select: { credentials: true },
     });
 
     if (existingUser) {
-      return NextResponse.json({ message: "이미 가입된 이메일입니다." }, { status: 400 });
+      if (existingUser.credentials) {
+        return NextResponse.json({ message: "이미 가입된 Email 입니다." }, { status: 400 });
+      } else {
+        return NextResponse.json({ message: "Kakao 로그인을 이용해 주세요." }, { status: 400 });
+      }
     }
 
     // 랜덤 6자리 숫자 생성
@@ -49,6 +54,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: "인증코드가 발송되었습니다." });
   } catch (error) {
     console.error("Email verification error:", error);
-    return NextResponse.json({ error: "Failed to send verification code." }, { status: 500 });
+    return NextResponse.json({ message: "Failed to send verification code." }, { status: 500 });
   }
 }

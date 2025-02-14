@@ -37,17 +37,19 @@ export default function SignUp() {
         body: JSON.stringify({ email }),
       });
 
+      const data = await response.json();
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to send verification code.");
+        throw new Error(data.message || "오류가 발생했습니다.");
       }
-      return response.json();
+      return data;
     },
     onSuccess: (data) => {
       setMessage(data.message || "Verification code sent to email.");
       setStep("verifyCode");
     },
-    onError: (error: Error) => setMessage(`Error: ${error.message}`),
+    onError: (error: any) => {
+      setMessage(`Error: ${error.message}`);
+    },
   });
 
   const validateCode = useMutation({
