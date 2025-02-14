@@ -184,7 +184,7 @@ export type Database = {
       User: {
         Row: {
           createdAt: string
-          credentials: boolean | null
+          credentials: boolean
           email: string
           emailVerified: string | null
           id: string
@@ -195,7 +195,7 @@ export type Database = {
         }
         Insert: {
           createdAt?: string
-          credentials?: boolean | null
+          credentials?: boolean
           email: string
           emailVerified?: string | null
           id: string
@@ -206,7 +206,7 @@ export type Database = {
         }
         Update: {
           createdAt?: string
-          credentials?: boolean | null
+          credentials?: boolean
           email?: string
           emailVerified?: string | null
           id?: string
