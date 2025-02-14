@@ -91,12 +91,12 @@ export default function SignUp() {
     },
     onSuccess: (data) => {
       setMessage(data.message || "Registration successful!");
-      alert(`${data.message}`);
+      alert(`${data.message} 로그인 페이지로 이동합니다.`);
       // * 회원 가입에 성공하면 이동할 page
       router.push("/sign-in");
     },
     onError: (error: any) => {
-      setMessage(`Error: ${error.message} 로그인 페이지로 이동합니다.`);
+      setMessage(`Error: ${error.message}`);
     },
   });
 
