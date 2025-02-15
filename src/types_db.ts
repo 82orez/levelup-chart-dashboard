@@ -125,6 +125,30 @@ export type Database = {
         }
         Relationships: []
       }
+      PasswordResetToken: {
+        Row: {
+          createdAt: string
+          email: string
+          expires: string
+          id: string
+          token: string
+        }
+        Insert: {
+          createdAt?: string
+          email: string
+          expires: string
+          id: string
+          token: string
+        }
+        Update: {
+          createdAt?: string
+          email?: string
+          expires?: string
+          id?: string
+          token?: string
+        }
+        Relationships: []
+      }
       Session: {
         Row: {
           createdAt: string

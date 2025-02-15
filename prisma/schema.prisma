@@ -92,3 +92,12 @@ model EmailVerificationToken {
 
   createdAt DateTime @default(now())
 }
+
+model PasswordResetToken {
+  id      String   @id @default(cuid())
+  email   String   @unique
+  token   String
+  expires DateTime
+
+  createdAt DateTime @default(now())
+}
