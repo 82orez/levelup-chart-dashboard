@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
+import Link from "next/link";
 
 export default function ResetPassword() {
   const [email, setEmail] = useState("");
@@ -33,12 +34,12 @@ export default function ResetPassword() {
 
   return (
     <div className="mx-auto mt-10 max-w-md rounded-lg bg-white p-6 shadow-lg">
-      <h1 className="mb-4 text-xl font-semibold">비밀번호 재설정</h1>
+      <h1 className="mb-10 text-xl font-semibold">비밀번호 재설정</h1>
 
       {!isEmailSent ? (
         <>
           <label htmlFor="email" className="mb-2 block">
-            등록된 이메일을 입력하세요:
+            등록된 이메일을 입력하세요.
           </label>
           <input
             id="email"
@@ -55,6 +56,10 @@ export default function ResetPassword() {
       ) : (
         <p className="text-green-500">{message}</p>
       )}
+
+      <div className={"mt-10 flex justify-center hover:underline"}>
+        <Link href={"/"}>To the Home</Link>
+      </div>
     </div>
   );
 }
