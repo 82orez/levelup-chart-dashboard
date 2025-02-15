@@ -50,7 +50,7 @@ export default function SignUp() {
     },
     onError: (error: any) => {
       setMessage(`Error: ${error.message}`);
-      setErrorMessage(`${error.message}`);
+      setErrorMessage(error.message);
     },
   });
 

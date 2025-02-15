@@ -7,6 +7,7 @@ import Link from "next/link";
 export default function ResetPassword() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [isEmailSent, setIsEmailSent] = useState(false);
 
   const sendResetLink = useMutation({
@@ -17,18 +18,20 @@ export default function ResetPassword() {
         body: JSON.stringify({ email }),
       });
 
+      const data = await response.json();
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "비밀번호 재설정 요청 실패");
+        throw new Error(data.message || "비밀번호 재설정 요청 실패");
       }
-      return response.json();
+      return data;
     },
     onSuccess: (data) => {
-      setMessage("비밀번호 재설정 링크가 이메일로 전송되었습니다.");
+      setMessage(data.message || "비밀번호 재설정 링크가 이메일로 전송되었습니다.");
+      setErrorMessage("");
       setIsEmailSent(true);
     },
-    onError: (error: Error) => {
+    onError: (error) => {
       setMessage(error.message);
+      setErrorMessage(error.message);
     },
   });
 
@@ -54,7 +57,7 @@ export default function ResetPassword() {
           </button>
         </>
       ) : (
-        <p className="text-green-500">{message}</p>
+        <p className="text-red-500">{errorMessage}</p>
       )}
 
       <div className={"mt-10 flex justify-center hover:underline"}>
