@@ -87,14 +87,13 @@ export const authOptions: NextAuthOptions = {
             email: forCheckEmail,
             name: "email",
           },
-          // where: {
-          //   AND: [{ email: forCheckEmail }, { name: "email" }],
-          // },
         });
 
         if (existingUser) {
-          // * 반환값: 오류를 표시할 클라이언트 경로(여기에서는 /error + 쿼리문(여기에서는 error=EmailExists)
-          return "/users/sign-in?error=EmailExists";
+          // * 반환값: 오류를 표시할 redirect 클라이언트 경로(여기에서는 /users/sign-in) + ? + 쿼리문(여기에서는 error=EmailExists & existEmail=${forCheckEmail})
+          // 오류를 표시할 클라이언트 경로는 다른 경로로(redirect) 변경 가능.
+          // existingUser 가 존재(error=EmailExists)하고 그 해당 이메일 계정은 existEmail=${forCheckEmail}
+          return `/users/sign-in?error=EmailExists&existEmail=${forCheckEmail}`;
         }
       }
 

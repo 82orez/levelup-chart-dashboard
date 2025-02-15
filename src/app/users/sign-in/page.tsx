@@ -21,15 +21,17 @@ export default function SignInPage() {
     }
   }, [status, router]);
 
-  // * 중복된 email 로 다른 소셜 로그인 인증을 시도했을 때 signIn 콜백 함수에서 반환한 에러 관련 메서지를 받아서 UI 기반 오류 메세지 출력.
-  // 콜백 함수에서 반환한 에러 관련 메서지를 처리하기 위한 상태 설정.
+  // * auth.ts 파일에서 반환한 에러 관련 query 문들을  처리하기 위한 상태 설정.
   const [error, setError] = useState<null | string>(null);
+  const [existEmail, setExistEmail] = useState("");
 
   useEffect(() => {
     // ? 오류 방지를 위해 아래 코드를 클라이언트 환경에서만 실행할 수 있도록 설정.
     if (typeof window !== "undefined") {
+      // * auth.ts 파일에서 반환한 에러 관련 query 문들을 처리.
       const params = new URLSearchParams(window.location.search);
       setError(params.get("error"));
+      setExistEmail(params.get("existEmail"));
     }
   }, []);
 
@@ -43,8 +45,10 @@ export default function SignInPage() {
   return (
     <div>
       {/*UI 기반 오류 메세지 부분*/}
-      {error === "EmailExists" && (
-        <div className="animate-pulse rounded-md bg-cyan-200 p-4 text-center text-red-800">Email 로그인으로 다시 시도해주세요.</div>
+      {error === "EmailExists" && existEmail && (
+        <div className="animate-pulse rounded-md bg-cyan-200 p-4 text-center text-red-800">
+          Email 로그인으로 다시 시도해주세요. 계정은 <span className={"text-xl font-bold"}>{existEmail}</span> 입니다.
+        </div>
       )}
 
       {status === "loading" ? (
