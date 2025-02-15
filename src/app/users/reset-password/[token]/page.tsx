@@ -1,13 +1,22 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, useParams } from "next/navigation"; // `useParams` 사용
 import { useMutation } from "@tanstack/react-query";
 import { GoEye, GoEyeClosed } from "react-icons/go";
 import clsx from "clsx";
 
-export default function ResetPasswordPage({ params }: { params: { token: string } }) {
+export default function ResetPasswordPage() {
   const router = useRouter();
+  const params = useParams(); // 동적 경로 값 가져오기
+  const [token, setToken] = useState(""); // 비밀번호 변경 토큰 저장
+
+  useEffect(() => {
+    if (params.token) {
+      setToken(params.token as string);
+    }
+  }, [params.token]);
+
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -22,7 +31,7 @@ export default function ResetPasswordPage({ params }: { params: { token: string 
       const response = await fetch("/api/auth/change-password", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token: params.token, password }),
+        body: JSON.stringify({ token, password }), // `token`을 안전하게 사용
       });
 
       const data = await response.json();
@@ -77,7 +86,6 @@ export default function ResetPasswordPage({ params }: { params: { token: string 
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           className="block w-full border p-2 pr-10"
-          // disabled={!isPasswordValid}
         />
         <button
           type="button"
