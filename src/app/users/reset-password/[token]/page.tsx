@@ -42,7 +42,7 @@ export default function ResetPasswordPage({ params }: { params: { token: string 
 
   return (
     <div className="mx-auto mt-10 max-w-md rounded-lg bg-white p-6 shadow-lg">
-      <h1 className="mb-4 text-xl font-semibold">비밀번호 변경</h1>
+      <h1 className="mb-10 text-xl font-semibold">비밀번호 변경</h1>
 
       <div className="relative mb-4">
         <label htmlFor="password" className="mb-1 block">
@@ -59,9 +59,11 @@ export default function ResetPasswordPage({ params }: { params: { token: string 
         <button
           type="button"
           onClick={() => setShowPassword(!showPassword)}
-          className={clsx("absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-800", { hidden: !password })}>
+          className={clsx("absolute right-3 top-10 text-gray-600 hover:text-gray-800", { hidden: !password })}>
           {showPassword ? <GoEyeClosed size={20} /> : <GoEye size={20} />}
         </button>
+
+        {!isPasswordValid && password && <p className="mb-3 mt-1 text-red-500">비밀번호는 영문을 포함하여 6자리 이상이어야 합니다.</p>}
       </div>
 
       <label htmlFor="confirmPassword" className="mb-1 block">
