@@ -7,6 +7,7 @@ import Link from "next/link";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { GoEye, GoEyeClosed } from "react-icons/go";
 import clsx from "clsx";
+import { TbMinusVertical } from "react-icons/tb";
 
 export default function SignIn() {
   const router = useRouter();
@@ -99,13 +100,25 @@ export default function SignIn() {
 
         <button
           type="submit"
-          className="flex h-12 w-full items-center justify-center rounded-md bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700"
+          className="flex h-10 w-full items-center justify-center rounded-md bg-blue-600 px-4 font-medium text-white hover:bg-blue-700"
           disabled={!formData.email || !formData.password}>
           {isLoading ? <AiOutlineLoading3Quarters className="animate-spin text-xl" /> : <div>Email 로그인</div>}
         </button>
 
         {error && <p className="animate-pulse text-center text-red-500">{error}</p>}
       </form>
+
+      <div className={"mt-3 flex justify-around"}>
+        <Link href={"/users/sign-up"} className={"min-w-[145px] text-center hover:underline"}>
+          회원 가입 하기
+        </Link>
+        <div className={"flex items-center justify-center"}>
+          <TbMinusVertical className={"h-full"} />
+        </div>
+        <Link href={"/users/reset-password"} className={"min-w-[145px] hover:underline"}>
+          비밀번호 재설정
+        </Link>
+      </div>
 
       <div className={"mt-10 flex justify-center hover:underline"}>
         <Link href={"/"}>To the Home</Link>
