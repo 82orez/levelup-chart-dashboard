@@ -19,7 +19,7 @@ export default function ResetPasswordPage({ params }: { params: { token: string 
 
   const resetPassword = useMutation({
     mutationFn: async () => {
-      const response = await fetch("/api/auth/reset-password", {
+      const response = await fetch("/api/auth/change-password", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token: params.token, password }),
