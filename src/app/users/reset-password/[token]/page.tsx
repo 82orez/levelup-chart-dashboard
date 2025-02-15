@@ -77,13 +77,22 @@ export default function ResetPasswordPage({ params }: { params: { token: string 
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           className="block w-full border p-2 pr-10"
+          // disabled={!isPasswordValid}
         />
         <button
           type="button"
           onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-          className={clsx("absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-800", { hidden: !confirmPassword })}>
+          className={clsx("absolute right-3 top-2.5 text-gray-600 hover:text-gray-800", { hidden: !confirmPassword })}>
           {showConfirmPassword ? <GoEyeClosed size={20} /> : <GoEye size={20} />}
         </button>
+
+        <div className={clsx("", { hidden: !password || !confirmPassword })}>
+          {!isPasswordMatch ? (
+            <p className="mb-3 mt-1 animate-pulse text-red-500">비밀번호가 일치하지 않습니다.</p>
+          ) : (
+            <p className="mb-3 text-green-500">비밀번호가 일치합니다.</p>
+          )}
+        </div>
       </div>
 
       <button
