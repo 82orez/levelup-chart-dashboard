@@ -29,9 +29,9 @@ export default function ResetPassword() {
       setErrorMessage("");
       setIsEmailSent(true);
     },
-    onError: (error) => {
-      setMessage(error.message);
-      setErrorMessage(error.message);
+    onError: (error: any) => {
+      setMessage(""); // 성공 메시지 초기화
+      setErrorMessage(error.message); // 오류 메시지 설정
     },
   });
 
@@ -57,11 +57,14 @@ export default function ResetPassword() {
           </button>
         </>
       ) : (
-        <p className="text-red-500">{errorMessage}</p>
+        <p className="text-green-500">{message}</p>
       )}
 
-      <div className={"mt-10 flex justify-center hover:underline"}>
-        <Link href={"/"}>To the Home</Link>
+      {/* 오류 메시지 표시 */}
+      {errorMessage && <p className="mt-3 text-red-500">{errorMessage}</p>}
+
+      <div className="mt-10 flex justify-center hover:underline">
+        <Link href="/">To the Home</Link>
       </div>
     </div>
   );

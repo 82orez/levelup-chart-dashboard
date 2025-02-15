@@ -52,7 +52,7 @@ export async function POST(req: Request) {
       text: `비밀번호를 재설정하려면 다음 링크를 클릭하세요: ${resetLink}`,
     });
 
-    return NextResponse.json({ message: "비밀번호 재설정 링크가 이메일로 전송되었습니다." });
+    return NextResponse.json({ message: "비밀번호 재설정 링크가 이메일로 전송되었습니다. 이메일을 확인해 주세요." });
   } catch (error) {
     console.error("비밀번호 재설정 오류:", error);
     return NextResponse.json({ message: "비밀번호 재설정 요청 실패" }, { status: 500 });
