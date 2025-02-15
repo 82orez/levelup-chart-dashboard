@@ -25,17 +25,17 @@ export default function ResetPasswordPage({ params }: { params: { token: string 
         body: JSON.stringify({ token: params.token, password }),
       });
 
+      const data = await response.json();
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "비밀번호 변경 실패");
+        throw new Error(data.message || "비밀번호 변경 실패");
       }
-      return response.json();
+      return data;
     },
-    onSuccess: () => {
-      setMessage("비밀번호가 성공적으로 변경되었습니다.");
+    onSuccess: (data) => {
+      setMessage(data.message || "비밀번호가 성공적으로 변경되었습니다.");
       setTimeout(() => router.push("/sign-in"), 2000);
     },
-    onError: (error: Error) => {
+    onError: (error: any) => {
       setMessage(error.message);
     },
   });

@@ -7,7 +7,7 @@ export async function PUT(req: Request) {
     const { token, password } = await req.json();
 
     if (!token || !password) {
-      return NextResponse.json({ error: "토큰과 비밀번호가 필요합니다." }, { status: 400 });
+      return NextResponse.json({ message: "토큰과 비밀번호가 필요합니다." }, { status: 400 });
     }
 
     // 🔹 token 으로 비밀번호 재설정 정보를 찾음 (findFirst 사용)
@@ -16,7 +16,7 @@ export async function PUT(req: Request) {
     });
 
     if (!resetToken || resetToken.expires < new Date()) {
-      return NextResponse.json({ error: "유효하지 않거나 만료된 토큰입니다." }, { status: 400 });
+      return NextResponse.json({ message: "유효하지 않거나 만료된 토큰입니다." }, { status: 400 });
     }
 
     const hashedPassword = await hash(password, 10);
@@ -34,6 +34,6 @@ export async function PUT(req: Request) {
 
     return NextResponse.json({ message: "비밀번호가 성공적으로 변경되었습니다." });
   } catch (error) {
-    return NextResponse.json({ error: "비밀번호 변경 실패" }, { status: 500 });
+    return NextResponse.json({ message: "비밀번호 변경 실패" }, { status: 500 });
   }
 }
