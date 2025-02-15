@@ -43,7 +43,7 @@ export async function POST(req: Request) {
       },
     });
 
-    const resetLink = `${process.env.NEXTAUTH_URL}/reset-password/${token}`;
+    const resetLink = `${process.env.NEXTAUTH_URL}/users/reset-password/${token}`;
 
     const data = await resend.emails.send({
       from: "Your Service Name <no-reply@supaneer.com>",
