@@ -13,8 +13,8 @@ export default function SignUp() {
   const [step, setStep] = useState<"inputEmail" | "verifyCode" | "inputPassword">("inputEmail");
   const [email, setEmail] = useState("");
   const [token, setToken] = useState("");
-  const [isVerified, setIsVerified] = useState(false);
   const [message, setMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [formData, setFormData] = useState({ name: "", password: "" });
   const [confirmPassword, setConfirmPassword] = useState(""); // 비밀번호 확인 입력 상태 추가
   const [showPassword, setShowPassword] = useState(false);
@@ -45,10 +45,12 @@ export default function SignUp() {
     },
     onSuccess: (data) => {
       setMessage(data.message || "Verification code sent to email.");
+      setErrorMessage("");
       setStep("verifyCode");
     },
     onError: (error: any) => {
       setMessage(`Error: ${error.message}`);
+      setErrorMessage(`${error.message}`);
     },
   });
 
@@ -67,11 +69,14 @@ export default function SignUp() {
       return data;
     },
     onSuccess: (data) => {
-      setIsVerified(true);
       setStep("inputPassword");
       setMessage(data.message || "Email verified successfully!");
+      setErrorMessage("");
     },
-    onError: (error: any) => setMessage(`Error: ${error.message}`),
+    onError: (error: any) => {
+      setMessage(`Error: ${error.message}`);
+      setErrorMessage(`${error.message}`);
+    },
   });
 
   const registerUser = useMutation({
@@ -91,12 +96,14 @@ export default function SignUp() {
     },
     onSuccess: (data) => {
       setMessage(data.message || "Registration successful!");
+      setErrorMessage("");
       alert(`${data.message} 로그인 페이지로 이동합니다.`);
       // * 회원 가입에 성공하면 이동할 page
       router.push("/sign-in");
     },
     onError: (error: any) => {
       setMessage(`Error: ${error.message}`);
+      setErrorMessage(`${error.message}`);
     },
   });
 
@@ -226,7 +233,8 @@ export default function SignUp() {
         </>
       )}
 
-      {message.startsWith("Error") && <p className={"mt-2 text-red-500"}>{message}</p>}
+      {errorMessage && <p className={"mt-2 text-red-500"}>{errorMessage}</p>}
+      {/*{message.startsWith("Error") && <p className={"mt-2 text-red-500"}>{message}</p>}*/}
       {/*{message && <p className={`mt-2 ${message.startsWith("Error") ? "text-red-500" : "text-green-500"}`}>{message}</p>}*/}
 
       <div className={"mt-10 flex justify-center hover:underline"}>
