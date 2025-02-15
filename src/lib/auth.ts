@@ -34,6 +34,10 @@ export const authOptions: NextAuthOptions = {
           throw new Error("가입되지 않은 이메일입니다.");
         }
 
+        if (!user.credentials) {
+          throw new Error("Kakao 로그인을 이용해 주세요.");
+        }
+
         // 비밀번호 검증
         const isValidPassword = await compare(credentials.password, user.password);
         if (!isValidPassword) {
@@ -80,8 +84,12 @@ export const authOptions: NextAuthOptions = {
 
         const existingUser = await prisma.user.findFirst({
           where: {
-            AND: [{ email: forCheckEmail }, { name: "email" }],
+            email: forCheckEmail,
+            name: "email",
           },
+          // where: {
+          //   AND: [{ email: forCheckEmail }, { name: "email" }],
+          // },
         });
 
         if (existingUser) {
