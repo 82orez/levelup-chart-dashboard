@@ -40,7 +40,7 @@ export async function POST(req: Request) {
       data: {
         email,
         token,
-        expires: new Date(Date.now() + 5 * 60 * 1000),
+        expires: new Date(Date.now() + 2 * 60 * 1000),
       },
     });
 
