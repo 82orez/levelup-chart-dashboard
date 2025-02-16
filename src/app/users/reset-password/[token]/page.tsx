@@ -5,6 +5,7 @@ import { useRouter, useParams } from "next/navigation"; // `useParams` 사용
 import { useMutation } from "@tanstack/react-query";
 import { GoEye, GoEyeClosed } from "react-icons/go";
 import clsx from "clsx";
+import Link from "next/link";
 
 export default function ResetPasswordPage() {
   const router = useRouter();
@@ -20,6 +21,7 @@ export default function ResetPasswordPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -42,10 +44,13 @@ export default function ResetPasswordPage() {
     },
     onSuccess: (data) => {
       setMessage(data.message || "비밀번호가 성공적으로 변경되었습니다.");
+      setErrorMessage("");
       setTimeout(() => router.push("/sign-in"), 2000);
     },
     onError: (error: any) => {
-      setMessage(error.message);
+      setMessage(""); // 성공 메시지 초기화
+      setErrorMessage(error.message); // 오류 메시지 설정
+      setTimeout(() => router.push("/sign-in"), 2000);
     },
   });
 
@@ -110,7 +115,14 @@ export default function ResetPasswordPage() {
         비밀번호 변경하기
       </button>
 
-      {message && <p className="mt-2 text-green-500">{message}</p>}
+      {/* 오류 메시지 표시 */}
+      {errorMessage && <p className="mt-3 text-red-500">{errorMessage}</p>}
+
+      {/*{message && <p className="mt-2 text-green-500">{message}</p>}*/}
+
+      <div className="mt-10 flex justify-center hover:underline">
+        <Link href="/">To the Home</Link>
+      </div>
     </div>
   );
 }

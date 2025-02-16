@@ -16,7 +16,7 @@ export async function PUT(req: Request) {
     });
 
     if (!resetToken || resetToken.expires < new Date()) {
-      return NextResponse.json({ message: "유효하지 않거나 만료된 토큰입니다." }, { status: 400 });
+      return NextResponse.json({ message: "유효하지 않거나 만료된 링크입니다." }, { status: 400 });
     }
 
     const hashedPassword = await hash(password, 10);
