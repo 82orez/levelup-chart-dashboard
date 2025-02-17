@@ -100,8 +100,10 @@ export default function SignIn() {
 
         <button
           type="submit"
-          className="flex h-10 w-full items-center justify-center rounded-md bg-blue-600 px-4 font-medium text-white hover:bg-blue-700"
-          disabled={!formData.email || !formData.password}>
+          className={clsx("flex h-10 w-full items-center justify-center rounded-md bg-blue-600 px-4 font-medium text-white hover:bg-blue-700", {
+            "opacity-100": isLoading,
+          })}
+          disabled={!formData.email || !formData.password || isLoading}>
           {isLoading ? <AiOutlineLoading3Quarters className="animate-spin text-xl" /> : <div>Email 로그인</div>}
         </button>
 
