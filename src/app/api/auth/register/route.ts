@@ -10,7 +10,7 @@ export async function POST(req: Request) {
     console.log("Parsing request body...");
     console.log("Parsed body:", body);
 
-    const { email, password, name } = body;
+    const { email, password } = body;
 
     if (!email || !password) {
       console.log("Validation failed: Missing email or password");
@@ -31,14 +31,14 @@ export async function POST(req: Request) {
     console.log("Creating user with data:", {
       email,
       password: hashedPassword,
-      name,
     });
 
     const user = await prisma.user.create({
       data: {
         email: email,
         password: hashedPassword,
-        name,
+        // * 소셜 로그인과 구분하기 위한 name 필드에 문자열을 입력하고 credentials 필드에 true 를 입력함.
+        name: "M'ZYC_g#E$I!",
         credentials: true,
       },
     });

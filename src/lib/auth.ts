@@ -85,7 +85,8 @@ export const authOptions: NextAuthOptions = {
         const existingUser = await prisma.user.findFirst({
           where: {
             email: forCheckEmail,
-            name: "email",
+            // *
+            name: "M'ZYC_g#E$I!",
           },
         });
 

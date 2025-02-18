@@ -13,10 +13,10 @@ export default function SignUp() {
 
   const [step, setStep] = useState<"inputEmail" | "verifyCode" | "inputPassword">("inputEmail");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [token, setToken] = useState("");
   const [message, setMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [formData, setFormData] = useState({ name: "", password: "" });
   const [confirmPassword, setConfirmPassword] = useState(""); // 비밀번호 확인 입력 상태 추가
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -27,8 +27,8 @@ export default function SignUp() {
   // 비밀번호 유효성 검사 (영문 포함 6자리 이상)
   const isValidPassword = (password: string) => /^(?=.*[A-Za-z]).{6,}$/.test(password);
 
-  const isPasswordMatch = formData.password === confirmPassword; // 비밀번호 일치 여부 확인
-  const isPasswordValid = isValidPassword(formData.password); // 비밀번호 유효성 확인
+  const isPasswordMatch = password === confirmPassword; // 비밀번호 일치 여부 확인
+  const isPasswordValid = isValidPassword(password); // 비밀번호 유효성 확인
 
   const sendVerification = useMutation({
     mutationFn: async () => {
@@ -85,7 +85,7 @@ export default function SignUp() {
       const response = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, email }),
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await response.json();
@@ -168,17 +168,6 @@ export default function SignUp() {
       ) : (
         <>
           <p className={"mb-4 border-b-4 border-blue-400 pb-1 text-xl"}>Step 3. 비밀번호 등록하기</p>
-          <label htmlFor="name" className="mb-1 block">
-            Name:
-          </label>
-          <input
-            id="name"
-            type="text"
-            placeholder="Enter your name"
-            value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            className="mb-2 block w-full border p-2"
-          />
           <label htmlFor="password" className="mb-1 block">
             비밀 번호를 입력해 주세요.
           </label>
@@ -187,19 +176,19 @@ export default function SignUp() {
               id="password"
               type={showPassword ? "text" : "password"} // showPassword 상태에 따라 타입 변경
               placeholder="영문 포함 6자리 이상"
-              value={formData.password}
-              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="mb-3 block w-full border p-2"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className={clsx("absolute right-2 top-2.5 text-2xl text-gray-600 hover:text-gray-800", { hidden: !formData.password })}>
+              className={clsx("absolute right-2 top-2.5 text-2xl text-gray-600 hover:text-gray-800", { hidden: !password })}>
               {showPassword ? <GoEye /> : <GoEyeClosed />}
             </button>
           </div>
 
-          {!isPasswordValid && formData.password && <p className="mb-3 text-red-500">비밀번호는 영문을 포함하여 6자리 이상이어야 합니다.</p>}
+          {!isPasswordValid && password && <p className="mb-3 text-red-500">비밀번호는 영문을 포함하여 6자리 이상이어야 합니다.</p>}
 
           <label htmlFor="confirmPassword" className="mb-1 block">
             비밀번호를 확인해 주세요.
@@ -217,13 +206,13 @@ export default function SignUp() {
               type="button"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
               className={clsx("absolute right-2 top-2.5 text-2xl text-gray-600 hover:text-gray-800", {
-                hidden: !formData.password || !confirmPassword,
+                hidden: !password || !confirmPassword,
               })}>
               {showConfirmPassword ? <GoEye /> : <GoEyeClosed />}
             </button>
           </div>
 
-          <div className={clsx("", { hidden: !formData.password || !confirmPassword })}>
+          <div className={clsx("", { hidden: !password || !confirmPassword })}>
             {!isPasswordMatch ? (
               <p className="mb-3 animate-pulse text-red-500">비밀번호가 일치하지 않습니다.</p>
             ) : (
@@ -233,7 +222,7 @@ export default function SignUp() {
 
           <div className={"relative"}>
             <button
-              disabled={!isPasswordMatch || !isPasswordMatch || registerUser.isPending}
+              disabled={!isPasswordMatch || !isPasswordMatch || registerUser.isPending || !password || !confirmPassword}
               onClick={() => registerUser.mutate()}
               className="w-full rounded-md bg-blue-600 p-2 text-white hover:bg-blue-400 disabled:opacity-80">
               {registerUser.isPending ? "회원 가입 중..." : "회원 가입 완료하기"}
