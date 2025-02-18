@@ -231,12 +231,15 @@ export default function SignUp() {
             )}
           </div>
 
-          <button
-            disabled={!isPasswordMatch || !isPasswordMatch || registerUser.isPending}
-            onClick={() => registerUser.mutate()}
-            className="w-full rounded-md bg-blue-600 p-2 text-white hover:bg-blue-400">
-            {registerUser.isPending ? "회원 가입 중..." : "회원 가입 완료하기"}
-          </button>
+          <div className={"relative"}>
+            <button
+              disabled={!isPasswordMatch || !isPasswordMatch || registerUser.isPending}
+              onClick={() => registerUser.mutate()}
+              className="w-full rounded-md bg-blue-600 p-2 text-white hover:bg-blue-400 disabled:opacity-80">
+              {registerUser.isPending ? "회원 가입 중..." : "회원 가입 완료하기"}
+            </button>
+            {registerUser.isPending && <AiOutlineLoading3Quarters className={"absolute left-14 top-3.5 animate-spin"} />}
+          </div>
         </>
       )}
 
