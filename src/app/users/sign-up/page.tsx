@@ -146,7 +146,6 @@ export default function SignUp() {
             <label htmlFor="token" className="mb-2 mt-2 block">
               인증코드를 입력해 주세요.
             </label>
-
             <input
               id="token"
               type="text"
@@ -155,12 +154,15 @@ export default function SignUp() {
               onChange={(e) => setToken(e.target.value)}
               className="mb-1 block w-full border p-2"
             />
-            <button
-              onClick={() => validateCode.mutate()}
-              disabled={!token || validateCode.isPending}
-              className="mt-2 w-full rounded-md bg-green-600 p-2 text-white hover:bg-green-500">
-              {validateCode.isPending ? "인증 중..." : "인증하기"}
-            </button>
+            <div className={"relative"}>
+              <button
+                onClick={() => validateCode.mutate()}
+                disabled={!token || validateCode.isPending}
+                className="mt-2 w-full rounded-md bg-green-600 p-2 text-white hover:bg-green-500 disabled:opacity-80">
+                {validateCode.isPending ? "인증 중..." : "인증하기"}
+              </button>
+              {validateCode.isPending && <AiOutlineLoading3Quarters className={"absolute left-16 top-5 animate-spin"} />}
+            </div>
           </div>
         </>
       ) : (
