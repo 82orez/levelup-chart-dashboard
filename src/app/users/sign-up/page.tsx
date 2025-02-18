@@ -6,6 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
 import Link from "next/link";
 import { GoEye, GoEyeClosed } from "react-icons/go";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 export default function SignUp() {
   const router = useRouter();
@@ -126,12 +127,16 @@ export default function SignUp() {
             onChange={(e) => setEmail(e.target.value)}
             className="mb-3 block w-full border p-2"
           />
-          <button
-            onClick={() => sendVerification.mutate()}
-            disabled={!isValidEmail(email) || sendVerification.isPending}
-            className="w-full rounded-md bg-blue-600 p-2 text-white hover:bg-blue-400">
-            {sendVerification.isPending ? "인증 코드 보내는 중..." : "이메일로 인증 코드 보내기"}
-          </button>
+          <div className={"relative"}>
+            <button
+              onClick={() => sendVerification.mutate()}
+              disabled={!isValidEmail(email) || sendVerification.isPending}
+              // disabled={true}
+              className={clsx("w-full rounded-md bg-blue-600 p-2 text-white hover:bg-blue-400 disabled:opacity-80")}>
+              {sendVerification.isPending ? "인증 코드 보내는 중..." : "이메일로 인증 코드 보내기"}
+            </button>
+            {sendVerification.isPending && <AiOutlineLoading3Quarters className={"absolute left-10 top-3.5 animate-spin"} />}
+          </div>
         </>
       ) : step === "verifyCode" ? (
         <>

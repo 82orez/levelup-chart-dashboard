@@ -21,7 +21,7 @@ export default function SignIn() {
   console.log("status: ", status);
   console.log("data: ", data);
 
-  // 로그인이 되어 있을 때 이 페이지로 접근하면 루트 페이지 '/dashboard' 로 되돌림.
+  // * 로그인이 되어 있을 때 이 페이지로 접근하면 루트 페이지 '/dashboard' 로 되돌림.
   useEffect(() => {
     if (status === "authenticated") {
       router.replace("/dashboard");
@@ -48,6 +48,7 @@ export default function SignIn() {
       if (result?.error) {
         setError(result.error || "An error occurred during sign in.");
       } else {
+        // * 로그인에 성공하면 /dashboard 로 이동.
         router.push("/dashboard");
       }
     } catch (error) {
