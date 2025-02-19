@@ -74,7 +74,7 @@ export default function ResetPasswordPage() {
           type="button"
           onClick={() => setShowPassword(!showPassword)}
           className={clsx("absolute right-3 top-10 text-gray-600 hover:text-gray-800", { hidden: !password })}>
-          {showPassword ? <GoEyeClosed size={20} /> : <GoEye size={20} />}
+          {showPassword ? <GoEye size={20} /> : <GoEyeClosed size={20} />}
         </button>
 
         {!isPasswordValid && password && <p className="mb-3 mt-1 text-red-500">비밀번호는 영문을 포함하여 6자리 이상이어야 합니다.</p>}
@@ -96,7 +96,7 @@ export default function ResetPasswordPage() {
           type="button"
           onClick={() => setShowConfirmPassword(!showConfirmPassword)}
           className={clsx("absolute right-3 top-2.5 text-gray-600 hover:text-gray-800", { hidden: !confirmPassword })}>
-          {showConfirmPassword ? <GoEyeClosed size={20} /> : <GoEye size={20} />}
+          {showPassword ? <GoEye size={20} /> : <GoEyeClosed size={20} />}
         </button>
 
         <div className={clsx("", { hidden: !password || !confirmPassword })}>
