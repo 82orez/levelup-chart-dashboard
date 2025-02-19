@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 export default function ResetPassword() {
   const [email, setEmail] = useState("");
@@ -52,9 +53,15 @@ export default function ResetPassword() {
             onChange={(e) => setEmail(e.target.value)}
             className="mb-3 block w-full border p-2"
           />
-          <button onClick={() => sendResetLink.mutate()} disabled={!email} className="w-full rounded-md bg-blue-600 p-2 text-white hover:bg-blue-400">
-            비밀번호 재설정 링크 보내기
-          </button>
+          <div className={"relative"}>
+            <button
+              onClick={() => sendResetLink.mutate()}
+              disabled={!email || sendResetLink.isPending}
+              className="w-full rounded-md bg-blue-600 p-2 text-white hover:bg-blue-400 disabled:opacity-80">
+              {sendResetLink.isPending ? "링크 보내는 중..." : "비밀번호 재설정 링크 보내기"}
+            </button>
+            {sendResetLink.isPending && <AiOutlineLoading3Quarters className={"absolute left-12 top-3.5 animate-spin"} />}
+          </div>
         </>
       ) : (
         <p className="text-green-500">{message}</p>
