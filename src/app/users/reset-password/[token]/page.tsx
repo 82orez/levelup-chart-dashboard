@@ -6,6 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import { GoEye, GoEyeClosed } from "react-icons/go";
 import clsx from "clsx";
 import Link from "next/link";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 export default function ResetPasswordPage() {
   const router = useRouter();
@@ -103,17 +104,20 @@ export default function ResetPasswordPage() {
           {!isPasswordMatch ? (
             <p className="mb-3 mt-1 animate-pulse text-red-500">비밀번호가 일치하지 않습니다.</p>
           ) : (
-            <p className="mb-3 text-green-500">비밀번호가 일치합니다.</p>
+            <p className="mb-3 mt-1 text-green-500">비밀번호가 일치합니다.</p>
           )}
         </div>
       </div>
 
-      <button
-        onClick={() => resetPassword.mutate()}
-        disabled={!isPasswordValid || !isPasswordMatch}
-        className="w-full rounded-md bg-blue-600 p-2 text-white hover:bg-blue-400 disabled:bg-gray-400">
-        비밀번호 변경하기
-      </button>
+      <div className={"relative"}>
+        <button
+          onClick={() => resetPassword.mutate()}
+          disabled={!isPasswordValid || !isPasswordMatch}
+          className="w-full rounded-md bg-blue-600 p-2 text-white hover:bg-blue-400 disabled:opacity-80">
+          {resetPassword.isPending ? "비밀번호 변경 중..." : "비밀번호 변경하기"}
+        </button>
+        {resetPassword.isPending && <AiOutlineLoading3Quarters className={"absolute left-16 top-3.5 animate-spin"} />}
+      </div>
 
       {/* 오류 메시지 표시 */}
       {errorMessage && <p className="mt-3 text-red-500">{errorMessage}</p>}
