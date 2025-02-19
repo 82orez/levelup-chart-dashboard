@@ -47,13 +47,15 @@ export default function SignIn() {
 
       if (result?.error) {
         setError(result.error || "An error occurred during sign in.");
+        setIsLoading(false); // 에러 발생 시 로딩 상태 해제
       } else {
+        // 로그인 성공 후 로딩 화면을 유지
+        setIsLoading(true);
         // * 로그인에 성공하면 /dashboard 로 이동.
         router.push("/dashboard");
       }
     } catch (error) {
       setError("An unexpected error occurred.");
-    } finally {
       setIsLoading(false);
     }
   };
