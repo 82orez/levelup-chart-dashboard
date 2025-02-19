@@ -34,11 +34,11 @@ export default function SignIn() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    setIsLoading(true);
-
     try {
+      e.preventDefault();
+      setError(null);
+      setIsLoading(true);
+
       const result = await signIn("credentials", {
         email: formData.email,
         password: formData.password,
