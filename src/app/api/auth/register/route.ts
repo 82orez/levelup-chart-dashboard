@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { hash } from "bcryptjs";
 import { prisma } from "@/lib/prisma";
+import { emailSignUpIndicator } from "@/lib/emailSignUpIndicator";
 
 export async function POST(req: Request) {
   console.log("Incoming request...");
@@ -38,7 +39,7 @@ export async function POST(req: Request) {
         email: email,
         password: hashedPassword,
         // * 소셜 로그인과 구분하기 위한 name 필드에 문자열을 입력하고 credentials 필드에 true 를 입력함.
-        name: "M'ZYC_g#E$I!",
+        name: emailSignUpIndicator,
         credentials: true,
       },
     });

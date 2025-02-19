@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { compare } from "bcryptjs";
 import CredentialsProvider from "next-auth/providers/credentials";
 import Kakao from "next-auth/providers/kakao";
+import { emailSignUpIndicator } from "@/lib/emailSignUpIndicator";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -82,11 +83,12 @@ export const authOptions: NextAuthOptions = {
       if (account?.provider === "kakao") {
         forCheckEmail = profile?.["kakao_account"]?.email; // 실제 카카오 프로필의 이메일 경로를 확인해야 함
 
+        // * 같은 이메일 계정으로 먼저 Email SignUp 을 진행했는지 확인.
         const existingUser = await prisma.user.findFirst({
           where: {
             email: forCheckEmail,
             // *
-            name: "M'ZYC_g#E$I!",
+            name: emailSignUpIndicator,
           },
         });
 
