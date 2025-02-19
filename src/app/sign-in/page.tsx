@@ -99,14 +99,20 @@ export default function SignIn() {
           </button>
         </div>
 
-        <button
-          type="submit"
-          className={clsx("flex h-10 w-full items-center justify-center rounded-md bg-blue-600 px-4 font-medium text-white hover:bg-blue-700", {
-            "opacity-100": isLoading,
-          })}
-          disabled={!formData.email || !formData.password || isLoading}>
-          {isLoading ? <AiOutlineLoading3Quarters className="animate-spin text-xl" /> : <div>Email 로그인</div>}
-        </button>
+        <div className={"relative"}>
+          <button
+            type="submit"
+            className={clsx(
+              "flex h-10 w-full items-center justify-center rounded-md bg-blue-600 px-4 font-medium text-white hover:bg-blue-700 disabled:opacity-80",
+              {
+                "opacity-100": isLoading,
+              },
+            )}
+            disabled={!formData.email || !formData.password || isLoading}>
+            {isLoading ? "로그인 중..." : "Email 로그인"}
+          </button>
+          {isLoading && <AiOutlineLoading3Quarters className={"absolute left-16 top-3.5 animate-spin"} />}
+        </div>
 
         {error && <p className="animate-pulse text-center text-red-500">{error}</p>}
       </form>

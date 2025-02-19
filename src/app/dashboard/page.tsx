@@ -12,8 +12,8 @@ export default async function DashboardPage() {
 
       {session ? (
         <div className={"mt-10"}>
-          <div>{session?.user?.name}</div>
           <div>{session?.user?.email}</div>
+          {/*<div>{session?.user?.name}</div>*/}
           {/*<img src={session?.user?.image || ""} width={50} height={50} alt={session?.user?.name || ""} className={"rounded-full"} />*/}
           {/*<div>{session?.user?.exp}</div>*/}
           {/*<div>{session?.user?.id}</div>*/}
