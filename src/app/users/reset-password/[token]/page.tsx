@@ -126,7 +126,7 @@ export default function ResetPasswordPage() {
       {/*{message && <p className="mt-2 text-green-500">{message}</p>}*/}
 
       <div className={clsx("mt-10 flex justify-center hover:underline", { "pointer-events-none": resetPassword.isPending })}>
-        <Link href="/">To the Home</Link>
+        <Link href="/">Back to Home</Link>
       </div>
     </div>
   );
