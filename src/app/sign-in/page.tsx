@@ -39,7 +39,7 @@ export default function SignIn() {
     if (typeof window !== "undefined") {
       // * auth.ts 파일에서 반환한 에러 관련 query 문들을 처리.
       const params = new URLSearchParams(window.location.search);
-      setErrorSocialLogIn(params.get("error"));
+      setErrorSocialLogIn(params.get("emailExistsError"));
       setExistEmail(params.get("existEmail"));
     }
   }, []);
