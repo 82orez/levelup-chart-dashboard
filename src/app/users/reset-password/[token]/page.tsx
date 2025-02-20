@@ -3,10 +3,11 @@
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation"; // `useParams` 사용
 import { useMutation } from "@tanstack/react-query";
-import { GoEye, GoEyeClosed } from "react-icons/go";
 import clsx from "clsx";
 import Link from "next/link";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { GoEye } from "react-icons/go";
+import { PiEyeClosed } from "react-icons/pi";
 
 export default function ResetPasswordPage() {
   const router = useRouter();
@@ -74,8 +75,8 @@ export default function ResetPasswordPage() {
         <button
           type="button"
           onClick={() => setShowPassword(!showPassword)}
-          className={clsx("absolute right-3 top-10 text-gray-600 hover:text-gray-800", { hidden: !password })}>
-          {showPassword ? <GoEye size={20} /> : <GoEyeClosed size={20} />}
+          className={clsx("absolute right-3 top-9 text-gray-600 hover:text-gray-800", { hidden: !password })}>
+          {showPassword ? <GoEye size={25} /> : <PiEyeClosed size={25} />}
         </button>
 
         {!isPasswordValid && password && <p className="mb-3 mt-1 text-red-500">비밀번호는 영문을 포함하여 6자리 이상이어야 합니다.</p>}
@@ -96,8 +97,8 @@ export default function ResetPasswordPage() {
         <button
           type="button"
           onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-          className={clsx("absolute right-3 top-2.5 text-gray-600 hover:text-gray-800", { hidden: !confirmPassword })}>
-          {showPassword ? <GoEye size={20} /> : <GoEyeClosed size={20} />}
+          className={clsx("absolute right-3 top-2 text-gray-600 hover:text-gray-800", { hidden: !confirmPassword })}>
+          {showConfirmPassword ? <GoEye size={25} /> : <PiEyeClosed size={25} />}
         </button>
 
         <div className={clsx("", { hidden: !password || !confirmPassword })}>
