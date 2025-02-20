@@ -133,7 +133,7 @@ export default function SignIn() {
       </div>
 
       <div className={clsx("mt-10 flex justify-center hover:underline", { "pointer-events-none": isLoading })}>
-        <Link href={"/"}>To the Home</Link>
+        <Link href={"/"}>Back to Home</Link>
       </div>
     </div>
   );
