@@ -146,8 +146,8 @@ export default function SignIn() {
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className={clsx("absolute right-5 top-[2.1rem] text-2xl text-gray-600 hover:text-gray-800", { hidden: !formData.password })}>
-            {showPassword ? <GoEye /> : <PiEyeClosed />}
+            className={clsx("absolute right-3 top-[2.1rem] text-gray-600 hover:text-gray-800", { hidden: !formData.password })}>
+            {showPassword ? <GoEye size={25} /> : <PiEyeClosed size={25} />}
           </button>
         </div>
 

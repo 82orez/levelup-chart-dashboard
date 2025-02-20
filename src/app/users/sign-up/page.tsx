@@ -101,7 +101,7 @@ export default function SignUp() {
       setErrorMessage("");
       alert(`${data.message} 로그인 페이지로 이동합니다.`);
       // * 회원 가입에 성공하면 이동할 page
-      router.push("/sign-in");
+      router.push("/users/sign-in");
     },
     onError: (error: any) => {
       setMessage(`Error: ${error.message}`);
@@ -184,8 +184,8 @@ export default function SignUp() {
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className={clsx("absolute right-2 top-2.5 text-2xl text-gray-600 hover:text-gray-800", { hidden: !password })}>
-              {showPassword ? <GoEye /> : <PiEyeClosed />}
+              className={clsx("absolute right-3 top-2.5 text-gray-600 hover:text-gray-800", { hidden: !password })}>
+              {showPassword ? <GoEye size={25} /> : <PiEyeClosed size={25} />}
             </button>
           </div>
 
@@ -206,10 +206,10 @@ export default function SignUp() {
             <button
               type="button"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className={clsx("absolute right-2 top-2.5 text-2xl text-gray-600 hover:text-gray-800", {
+              className={clsx("absolute right-3 top-2.5 text-gray-600 hover:text-gray-800", {
                 hidden: !password || !confirmPassword,
               })}>
-              {showConfirmPassword ? <GoEye /> : <PiEyeClosed />}
+              {showConfirmPassword ? <GoEye size={25} /> : <PiEyeClosed size={25} />}
             </button>
           </div>
 

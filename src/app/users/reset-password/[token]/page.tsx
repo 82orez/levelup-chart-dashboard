@@ -47,12 +47,14 @@ export default function ResetPasswordPage() {
     onSuccess: (data) => {
       setMessage(data.message || "비밀번호가 성공적으로 변경되었습니다.");
       setErrorMessage("");
-      setTimeout(() => router.push("/sign-in"), 2000);
+      alert(data.message);
+      router.push("/users/sign-in");
+      // setTimeout(() => router.push("/users/sign-in"), 2000);
     },
     onError: (error: any) => {
       setMessage(""); // 성공 메시지 초기화
       setErrorMessage(error.message); // 오류 메시지 설정
-      setTimeout(() => router.push("/sign-in"), 2000);
+      setTimeout(() => router.push("/users/sign-in"), 2000);
     },
   });
 

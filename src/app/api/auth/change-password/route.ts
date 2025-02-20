@@ -32,8 +32,8 @@ export async function PUT(req: Request) {
       where: { id: resetToken.id }, // 🔹 `id` 값을 기준으로 삭제해야 함
     });
 
-    return NextResponse.json({ message: "비밀번호가 성공적으로 변경되었습니다." });
+    return NextResponse.json({ message: "비밀번호가 성공적으로 변경되었습니다. 로그인 페이지로 이동합니다." });
   } catch (error) {
-    return NextResponse.json({ message: "비밀번호 변경 실패" }, { status: 500 });
+    return NextResponse.json({ message: "비밀번호 변경에 실패했습니다." }, { status: 500 });
   }
 }
