@@ -233,7 +233,7 @@ export default function SignUp() {
         </>
       )}
 
-      {errorMessage && <p className={"mt-2 text-red-500"}>{errorMessage}</p>}
+      {errorMessage && <p className="mt-2 animate-pulse text-center text-red-500">{errorMessage}</p>}
       {/*{message.startsWith("Error") && <p className={"mt-2 text-red-500"}>{message}</p>}*/}
       {/*{message && <p className={`mt-2 ${message.startsWith("Error") ? "text-red-500" : "text-green-500"}`}>{message}</p>}*/}
 

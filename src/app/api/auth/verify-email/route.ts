@@ -23,7 +23,7 @@ export async function POST(req: Request) {
       if (existingUser.credentials) {
         return NextResponse.json({ message: "이미 가입된 Email 입니다." }, { status: 400 });
       } else {
-        return NextResponse.json({ message: "Kakao 로그인을 이용해 주세요." }, { status: 400 });
+        return NextResponse.json({ message: "Kakao 로그인 사용자입니다." }, { status: 400 });
       }
     }
 

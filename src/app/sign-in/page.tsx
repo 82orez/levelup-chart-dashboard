@@ -116,9 +116,9 @@ export default function SignIn() {
           </button>
           {isLoading && <AiOutlineLoading3Quarters className={"absolute left-16 top-3.5 animate-spin"} />}
         </div>
-
-        {error && <p className="animate-pulse text-center text-red-500">{error}</p>}
       </form>
+
+      {error && <p className="mt-2 animate-pulse text-center text-red-500">{error}</p>}
 
       <div className={clsx("mt-3 flex justify-around", { "pointer-events-none": isLoading })}>
         <Link href={"/users/sign-up"} className={"min-w-[145px] text-center hover:underline"}>
