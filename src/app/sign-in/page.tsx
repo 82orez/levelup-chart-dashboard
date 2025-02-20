@@ -30,6 +30,20 @@ export default function SignIn() {
     }
   }, [status, router]);
 
+  // * auth.ts 파일에서 반환한 에러 관련 query 문들을  처리하기 위한 상태 설정.
+  const [errorSocialLogIn, setErrorSocialLogIn] = useState<null | string>(null);
+  const [existEmail, setExistEmail] = useState("");
+
+  useEffect(() => {
+    // ? 오류 방지를 위해 아래 코드를 클라이언트 환경에서만 실행할 수 있도록 설정.
+    if (typeof window !== "undefined") {
+      // * auth.ts 파일에서 반환한 에러 관련 query 문들을 처리.
+      const params = new URLSearchParams(window.location.search);
+      setErrorSocialLogIn(params.get("error"));
+      setExistEmail(params.get("existEmail"));
+    }
+  }, []);
+
   const [isKakaoLoading, setIsKakaoLoading] = useState(false);
 
   const handleClickKakao = async () => {
@@ -71,6 +85,13 @@ export default function SignIn() {
 
   return (
     <div className="mx-auto mt-10 max-w-sm rounded-lg bg-white p-6 shadow-lg">
+      {/*UI 기반 오류 메세지 부분*/}
+      {errorSocialLogIn === "EmailExists" && existEmail && (
+        <div className="animate-pulse rounded-md bg-cyan-200 px-5 py-2 text-center text-red-800">
+          Email 로그인으로 다시 시도해주세요. 계정은 <span className={"font-bold"}>{existEmail}</span> 입니다.
+        </div>
+      )}
+
       <h1 className="mb-10 text-xl font-semibold">로그인 하기</h1>
 
       <div className="relative">
