@@ -80,13 +80,11 @@ export default function SignIn() {
           disabled={isKakaoLoading || isLoading}
           className="flex w-full items-center rounded-md border px-12 py-2 text-center font-semibold disabled:opacity-80"
           style={{ backgroundColor: "#FEE500" }}>
-          {isLoading ? <AiOutlineLoading3Quarters className={"animate-spin"} /> : <BiSolidMessageRounded size={25} />}
-          {/*<BiSolidMessageRounded className={"text-xl"} />*/}
+          {isKakaoLoading ? <AiOutlineLoading3Quarters className={"animate-spin"} /> : <BiSolidMessageRounded size={25} />}
           <div className={"grow"} style={{ color: "rgba(0, 0, 0, 0.85)" }}>
             카카오로 시작하기
           </div>
         </button>
-        {/*{true && <AiOutlineLoading3Quarters className={"absolute left-16 top-3.5 animate-spin"} />}*/}
       </div>
 
       <div className="my-6 flex items-center">
@@ -141,7 +139,7 @@ export default function SignIn() {
                 "opacity-100": isLoading,
               },
             )}
-            disabled={!formData.email || !formData.password || isLoading}>
+            disabled={!formData.email || !formData.password || isLoading || isKakaoLoading}>
             {isLoading ? "로그인 중..." : "Email 로그인"}
           </button>
           {isLoading && <AiOutlineLoading3Quarters className={"absolute left-16 top-3.5 animate-spin"} />}
