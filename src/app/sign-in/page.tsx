@@ -87,7 +87,7 @@ export default function SignIn() {
     <div className="mx-auto mt-10 max-w-sm rounded-lg bg-white p-6 shadow-lg">
       {/*UI 기반 오류 메세지 부분*/}
       {errorSocialLogIn === "EmailExists" && existEmail && (
-        <div className="animate-pulse rounded-md bg-cyan-200 px-5 py-2 text-center text-red-800">
+        <div className="mb-4 animate-pulse rounded-md bg-cyan-200 px-5 py-2 text-center text-red-800">
           Email 로그인으로 다시 시도해주세요. 계정은 <span className={"font-bold"}>{existEmail}</span> 입니다.
         </div>
       )}
