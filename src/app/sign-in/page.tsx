@@ -77,9 +77,11 @@ export default function SignIn() {
         <button
           type="button"
           onClick={handleClickKakao}
-          className="flex w-full items-center rounded-md border border-gray-700 px-5 py-2 text-center font-semibold"
+          disabled={isKakaoLoading || isLoading}
+          className="flex w-full items-center rounded-md border px-12 py-2 text-center font-semibold disabled:opacity-80"
           style={{ backgroundColor: "#FEE500" }}>
-          <BiSolidMessageRounded className={"text-xl"} />
+          {isLoading ? <AiOutlineLoading3Quarters className={"animate-spin"} /> : <BiSolidMessageRounded size={25} />}
+          {/*<BiSolidMessageRounded className={"text-xl"} />*/}
           <div className={"grow"} style={{ color: "rgba(0, 0, 0, 0.85)" }}>
             카카오로 시작하기
           </div>
