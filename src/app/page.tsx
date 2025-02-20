@@ -21,19 +21,15 @@ export default function Page() {
           </p>
           <div className="flex gap-2">
             <Link
-              href="/sign-in"
+              href="/users/sign-in"
               className="flex items-center gap-2 self-start rounded-lg bg-blue-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-400 md:text-base">
-              통합 로그인 <ArrowRightIcon className="w-5 md:w-2 lg:w-6" />
+              로그인 <ArrowRightIcon className="w-5 md:w-2 lg:w-6" />
             </Link>
+
             <Link
               href="/users/email-sign-in"
               className="flex items-center gap-2 self-start rounded-lg bg-blue-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-400 md:text-base">
               이메일 로그인 <ArrowRightIcon className="w-5 md:w-2 lg:w-6" />
-            </Link>
-            <Link
-              href="/users/sign-in"
-              className="flex items-center gap-2 self-start rounded-lg bg-blue-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-400 md:text-base">
-              소셜 로그인 <ArrowRightIcon className="w-5 md:w-2 lg:w-6" />
             </Link>
 
             <Link

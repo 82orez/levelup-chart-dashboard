@@ -53,7 +53,8 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.KAKAO_CLIENT_SECRET || "",
     }),
   ],
-  pages: { signIn: "/sign-in" },
+  // * sign-in 페이지의 경로 지정.
+  pages: { signIn: "/users/sign-in" },
   callbacks: {
     jwt: async ({ user, token }) => {
       console.log("user: ", user);
