@@ -9,7 +9,6 @@ import { GoEye } from "react-icons/go";
 import clsx from "clsx";
 import { TbMinusVertical } from "react-icons/tb";
 import { PiEyeClosed } from "react-icons/pi";
-import { BiSolidMessageRounded } from "react-icons/bi";
 
 export default function SignIn() {
   const router = useRouter();
@@ -29,13 +28,6 @@ export default function SignIn() {
       router.replace("/dashboard");
     }
   }, [status, router]);
-
-  const [isKakaoLoading, setIsKakaoLoading] = useState(false);
-
-  const handleClickKakao = async () => {
-    setIsKakaoLoading(true);
-    await signIn("kakao", { callbackUrl: "/dashboard" });
-  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -70,28 +62,8 @@ export default function SignIn() {
   };
 
   return (
-    <div className="mx-auto mt-10 max-w-sm rounded-lg bg-white p-6 shadow-lg">
+    <div className="mx-auto mt-10 max-w-md rounded-lg bg-white p-6 shadow-lg">
       <h1 className="mb-10 text-xl font-semibold">로그인 하기</h1>
-
-      <div className="relative">
-        <button
-          type="button"
-          onClick={handleClickKakao}
-          className="flex w-full items-center rounded-md border border-gray-700 px-5 py-2 text-center font-semibold"
-          style={{ backgroundColor: "#FEE500" }}>
-          <BiSolidMessageRounded className={"text-xl"} />
-          <div className={"grow"} style={{ color: "rgba(0, 0, 0, 0.85)" }}>
-            카카오로 시작하기
-          </div>
-        </button>
-        {/*{true && <AiOutlineLoading3Quarters className={"absolute left-16 top-3.5 animate-spin"} />}*/}
-      </div>
-
-      <div className="my-6 flex items-center">
-        <hr className="flex-grow border-t border-gray-300" />
-        <span className="px-3 text-sm text-gray-500">또는 이메일로 로그인</span>
-        <hr className="flex-grow border-t border-gray-300" />
-      </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
@@ -150,17 +122,17 @@ export default function SignIn() {
 
       <div className={clsx("mt-3 flex justify-around", { "pointer-events-none": isLoading })}>
         <Link href={"/users/sign-up"} className={"min-w-[145px] text-center hover:underline"}>
-          이메일 회원 가입
+          회원 가입 하기
         </Link>
         <div className={"flex items-center justify-center"}>
           <TbMinusVertical className={"h-full"} />
         </div>
-        <Link href={"/users/reset-password"} className={"min-w-[145px] text-center hover:underline"}>
+        <Link href={"/users/reset-password"} className={"min-w-[145px] hover:underline"}>
           비밀번호 재설정
         </Link>
       </div>
 
-      <div className={clsx("mt-10 flex justify-center hover:underline", { "pointer-events-none": isLoading || isKakaoLoading })}>
+      <div className={clsx("mt-10 flex justify-center hover:underline", { "pointer-events-none": isLoading })}>
         <Link href={"/"}>To the Home</Link>
       </div>
     </div>
