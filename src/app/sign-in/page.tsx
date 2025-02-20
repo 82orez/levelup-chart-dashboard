@@ -5,9 +5,10 @@ import { useRouter } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { GoEye, GoEyeClosed } from "react-icons/go";
+import { GoEye } from "react-icons/go";
 import clsx from "clsx";
 import { TbMinusVertical } from "react-icons/tb";
+import { PiEyeClosed } from "react-icons/pi";
 
 export default function SignIn() {
   const router = useRouter();
@@ -97,7 +98,7 @@ export default function SignIn() {
             type="button"
             onClick={() => setShowPassword(!showPassword)}
             className={clsx("absolute right-5 top-[2.1rem] text-2xl text-gray-600 hover:text-gray-800", { hidden: !formData.password })}>
-            {showPassword ? <GoEye /> : <GoEyeClosed />}
+            {showPassword ? <GoEye /> : <PiEyeClosed />}
           </button>
         </div>
 

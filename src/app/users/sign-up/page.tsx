@@ -5,8 +5,9 @@ import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
 import Link from "next/link";
-import { GoEye, GoEyeClosed } from "react-icons/go";
+import { GoEye } from "react-icons/go";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { PiEyeClosed } from "react-icons/pi";
 
 export default function SignUp() {
   const router = useRouter();
@@ -184,7 +185,7 @@ export default function SignUp() {
               type="button"
               onClick={() => setShowPassword(!showPassword)}
               className={clsx("absolute right-2 top-2.5 text-2xl text-gray-600 hover:text-gray-800", { hidden: !password })}>
-              {showPassword ? <GoEye /> : <GoEyeClosed />}
+              {showPassword ? <GoEye /> : <PiEyeClosed />}
             </button>
           </div>
 
@@ -208,7 +209,7 @@ export default function SignUp() {
               className={clsx("absolute right-2 top-2.5 text-2xl text-gray-600 hover:text-gray-800", {
                 hidden: !password || !confirmPassword,
               })}>
-              {showConfirmPassword ? <GoEye /> : <GoEyeClosed />}
+              {showConfirmPassword ? <GoEye /> : <PiEyeClosed />}
             </button>
           </div>
 
