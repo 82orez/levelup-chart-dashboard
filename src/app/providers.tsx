@@ -23,11 +23,11 @@ export const NextLayout = ({ children }: Props) => {
 
   // 로그인이 되어 있을 때 이 페이지로 접근하면 루트 페이지 '/dashboard' 로 되돌림.
   useEffect(() => {
+    setIsLoading(true);
     if (status === "authenticated") {
-      setIsLoading(true);
       router.replace("/dashboard");
-      setIsLoading(false);
     }
+    setIsLoading(false);
   }, [status, router]);
 
   return (
