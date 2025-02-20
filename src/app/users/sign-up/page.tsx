@@ -236,7 +236,10 @@ export default function SignUp() {
       {/*{message.startsWith("Error") && <p className={"mt-2 text-red-500"}>{message}</p>}*/}
       {/*{message && <p className={`mt-2 ${message.startsWith("Error") ? "text-red-500" : "text-green-500"}`}>{message}</p>}*/}
 
-      <div className={"mt-10 flex justify-center hover:underline"}>
+      <div
+        className={clsx("mt-20 flex justify-center hover:underline", {
+          "pointer-events-none": sendVerification.isPending || validateCode.isPending || registerUser.isPending,
+        })}>
         <Link href={"/"}>Back to Home</Link>
       </div>
     </div>

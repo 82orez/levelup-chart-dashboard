@@ -119,7 +119,7 @@ export default function SignIn() {
         {error && <p className="animate-pulse text-center text-red-500">{error}</p>}
       </form>
 
-      <div className={"mt-3 flex justify-around"}>
+      <div className={clsx("mt-3 flex justify-around", { "pointer-events-none": isLoading })}>
         <Link href={"/users/sign-up"} className={"min-w-[145px] text-center hover:underline"}>
           회원 가입 하기
         </Link>
@@ -131,7 +131,7 @@ export default function SignIn() {
         </Link>
       </div>
 
-      <div className={"mt-10 flex justify-center hover:underline"}>
+      <div className={clsx("mt-10 flex justify-center hover:underline", { "pointer-events-none": isLoading })}>
         <Link href={"/"}>To the Home</Link>
       </div>
     </div>

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import clsx from "clsx";
 
 export default function ResetPassword() {
   const [email, setEmail] = useState("");
@@ -70,7 +71,7 @@ export default function ResetPassword() {
       {/* 오류 메시지 표시 */}
       {errorMessage && <p className="mt-3 text-red-500">{errorMessage}</p>}
 
-      <div className="mt-10 flex justify-center hover:underline">
+      <div className={clsx("mt-10 flex justify-center hover:underline", { "pointer-events-none": sendResetLink.isPending })}>
         <Link href="/">To the Home</Link>
       </div>
     </div>
