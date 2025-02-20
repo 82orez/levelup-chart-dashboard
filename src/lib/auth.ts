@@ -94,10 +94,10 @@ export const authOptions: NextAuthOptions = {
         });
 
         if (existingUser) {
-          // * 반환값: 오류를 표시할 redirect 클라이언트 경로(여기에서는 /sign-in) + ? + 쿼리문(여기에서는 emailExistsError = EmailExists & existEmail = ${forCheckEmail})
-          // 오류를 표시할 클라이언트 경로는 다른 경로로(redirect) 변경 가능.
-          // existingUser 가 존재(error=EmailExists)하고 그 해당 이메일 계정은 existEmail=${forCheckEmail}
-          return `/sign-in?emailExistsError=EmailExists&existEmail=${forCheckEmail}`;
+          // * 반환값: 오류를 표시할 redirect 클라이언트 경로 + ? + 쿼리문과 그에 해당하는 값
+          // ? 로그인 페이지에 오류를 표시할 경우 반환 경로는 pages 속성에서 설정한 로그인 페이지 경로와 같아야 함.
+          // ? existingUser 가 존재(emailExistsError=EmailExists)하고 그 해당 이메일 계정은 existEmail=${forCheckEmail}
+          return `/users/sign-in?emailExistsError=EmailExists&existEmail=${forCheckEmail}`;
         }
       }
 
